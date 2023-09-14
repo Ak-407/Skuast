@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="StyleP.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://dl.dropboxusercontent.com/s/0cuc5nq39d2loqg/bootstrap-tokenfield.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/popper.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background">
+    </div>
+    
+    <section id="job-posting-area" class="py-5">
+        
+        <div class="container">
+            <div class="job-posting-wrapper mx-auto p-3">
+    <h1 class="h1">Hello <%= username %>!</h1>
+    <form action="/profile" method="POST">
+        <div class="form-group">
+        <% if (Advisor && Advisor.length > 0) { %>
+            <% console.log("Type of Advisor:", typeof Advisor); %>
+        <% Advisor.forEach(function(game) { %>
+        <label for="Advisor"><h1><%= game %></h1></label>
+        <% }); %>
+        <% } else { %>
+            <p>You haven't added any favorite games yet.</p>
+        <% } %>
+        <input id="job-title" class="form-control" type="text" id="Advisor" placeholder="Name of Advisor" name="Advisor">
+    </div>
+        <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
+    </form>
+    <form action="/profile" method="POST">
+        <div class="form-group">
+        <% if (Crop && Crop.length > 0) { %>
+            <% Crop.forEach(function(cropItem) { %>
+                <label for="Crop"><h1><%= cropItem %></h1></label>
+            <% }); %>
+        <% } else { %>
+            <p>You haven't added any favorite crops yet.</p>
+        <% } %>
+        <input id="job-title" class="form-control" type="text" id="Crop" placeholder="Name of Crop" name="Crop">
+    </div>
+        <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
+    </form>
+    <form action="/profile" method="POST">
+        <div class="form-group">
+        <% if (Research && Research.length > 0) { %>
+            <% Research.forEach(function(Research) { %>
+                <label for="Research"><h1><%= Research %></h1></label>
+            <% }); %>
+        <% } else { %>
+            <p>You haven't added any favorite Research yet.</p>
+        <% } %>
+        <input id="job-title" class="form-control" type="text" id="Research" placeholder="Title of Research" name="Research">
+    </div>
+        <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
+    </form>
+    <form action="/profile" method="POST">
+        <div class="form-group">
+        <% if (Objectives && Objectives.length > 0) { %>
+            <% Objectives.forEach(function(Objectives) { %>
+                <label for="Objectives"><h1><%= Objectives %></h1></label>
+                <br>
+            <% }); %>
+        <% } else { %>
+            <p>You haven't added any favorite Objectives yet.</p>
+        <% } %>
+        <input id="job-title" class="form-control" type="text" id="Objectives" placeholder="Objectives" name="Objectives">
+    </div>
+        <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
+    </form>
+    <h2 class="h2OBJ">Experiment</h2>
+
+    
+
+
+
+
+
+
+
+
+
+
+    <!-- <form action="/profile" method="POST">
+        <div class="form-group">
+        <% if (Experiment1Year && Experiment1Year.length > 0) { %>
+            <% Experiment1Year.forEach(function(Experiment1Year) { %>
+                <label for="Experiment1Year"><h1><%= Experiment1Year %></h1></label>
+            <% }); %>
+        <% } else { %>
+            <p>You haven't added any favorite Experiment-I yet.</p>
+        <% } %>
+        <input id="job-title" class="form-control EXP" type="text" id="Experiment1Year" placeholder="Experiment-I Year Of Execution" name="Experiment1Year">
+    </div>
+        <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
+    </form>
+    <form action="/profile" method="POST">
+        <div class="form-group">
+        <% if (Experiment1Duration && Experiment1Duration.length > 0) { %>
+            <% Experiment1Duration.forEach(function(Experiment1Duration) { %>
+                <label for="Experiment1Duration"><h1><%= Experiment1Duration %></h1></label>
+            <% }); %>
+        <% } else { %>
+            <p>You haven't added any favorite Experiment-I yet.</p>
+        <% } %>
+        <input id="job-title" class="form-control EXP" type="text" id="Experiment1Duration" placeholder="Experiment-I Duration" name="Experiment1Duration">
+    </div>
+        <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
+    </form>
+    <form action="/profile" method="POST">
+        <div class="form-group">
+        <% if (Experiment1Treatment && Experiment1Treatment.length > 0) { %>
+            <% Experiment1Treatment.forEach(function(Experiment1Treatment) { %>
+                <label for="Experiment1Treatment"><h1><%= Experiment1Treatment %></h1></label>
+            <% }); %>
+        <% } else { %>
+            <p>You haven't added any favorite Experiment-I yet.</p>
+        <% } %>
+        <input id="job-title" class="form-control EXP" type="text" id="Experiment1Treatment" placeholder="Experiment-I Treatment Details" name="Experiment1Treatment">
+    </div>
+        <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
+    </form>
+    <form action="/profile" method="POST">
+        <div class="form-group">
+        <% if (Experiment1Data && Experiment1Data.length > 0) { %>
+            <% Experiment1Data.forEach(function(Experiment1Data) { %>
+                <label for="Experiment1Data"><h1><%= Experiment1Data %></h1></label>
+            <% }); %>
+        <% } else { %>
+            <p>You haven't added any favorite Experiment-I yet.</p>
+        <% } %>
+        <input id="job-title" class="form-control EXP" type="text" id="Experiment1Data" placeholder="Experiment-I Data Details" name="Experiment1Data">
+    </div>
+        <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
+    </form>
+    
+
+
+    <form action="/profile" method="POST">
+        <div class="form-group">
+        <% if (Experiment2Year && Experiment2Year.length > 0) { %>
+            <% Experiment2Year.forEach(function(Experiment2Year) { %>
+                <label for="Experiment2Year"><h1><%= Experiment2Year %></h1></label>
+            <% }); %>
+        <% } else { %>
+            <p>You haven't added any favorite Experiment-II yet.</p>
+        <% } %>
+        <input id="job-title" class="form-control EXP" type="text" id="Experiment2Year" placeholder="Experiment-II Year Of Execution" name="Experiment2Year">
+    </div>
+        <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
+    </form>
+    <form action="/profile" method="POST">
+        <div class="form-group">
+        <% if (Experiment2Duration && Experiment2Duration.length > 0) { %>
+            <% Experiment2Duration.forEach(function(Experiment2Duration) { %>
+                <label for="Experiment2Duration"><h1><%= Experiment2Duration %></h1></label>
+            <% }); %>
+        <% } else { %>
+            <p>You haven't added any favorite Experiment-II yet.</p>
+        <% } %>
+        <input id="job-title" class="form-control EXP" type="text" id="Experiment2Duration" placeholder="Experiment-II Duration Of Experiment" name="Experiment2Duration">
+    </div>
+        <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
+    </form>
+    <form action="/profile" method="POST">
+        <div class="form-group">
+        <% if (Experiment2Treatment && Experiment2Treatment.length > 0) { %>
+            <% Experiment2Treatment.forEach(function(Experiment2Treatment) { %>
+                <label for="Experiment2Treatment"><h1><%= Experiment2Treatment %></h1></label>
+            <% }); %>
+        <% } else { %>
+            <p>You haven't added any favorite Experiment-II yet.</p>
+        <% } %>
+        <input id="job-title" class="form-control EXP" type="text" id="Experiment2Treatment" placeholder="Experiment-II Treatment Details" name="Experiment2Treatment">
+    </div>
+        <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
+    </form>
+    <form action="/profile" method="POST">
+        <div class="form-group">
+        <% if (Experiment2Data && Experiment2Data.length > 0) { %>
+            <% Experiment2Data.forEach(function(Experiment2Data) { %>
+                <label for="Experiment2Data"><h1><%= Experiment2Data %></h1></label>
+            <% }); %>
+        <% } else { %>
+            <p>You haven't added any favorite Experiment-II yet.</p>
+        <% } %>
+        <input id="job-title" class="form-control EXP" type="text" id="Experiment2Data" placeholder="Experiment-II Data Details" name="Experiment2Data">
+    </div>
+        <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
+    </form>
+
+
+
+    <form action="/profile" method="POST">
+        <div class="form-group">
+        <% if (Experiment3Year && Experiment3Year.length > 0) { %>
+            <% Experiment3Year.forEach(function(Experiment3Year) { %>
+                <label for="Experiment3Year"><h1><%= Experiment3Year %></h1></label>
+            <% }); %>
+        <% } else { %>
+            <p>You haven't added any favorite Experiment-III yet.</p>
+        <% } %>
+        <input id="job-title" class="form-control EXP" type="text" id="Experiment3Year" placeholder="Experiment-III Year Of Execution" name="Experiment3Year">
+    </div>
+        <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
+    </form>
+    <form action="/profile" method="POST">
+        <div class="form-group">
+        <% if (Experiment3Duration && Experiment3Duration.length > 0) { %>
+            <% Experiment3Duration.forEach(function(Experiment3Duration) { %>
+                <label for="Experiment3Duration"><h1><%= Experiment3Duration %></h1></label>
+            <% }); %>
+        <% } else { %>
+            <p>You haven't added any favorite Experiment-III yet.</p>
+        <% } %>
+        <input id="job-title" class="form-control EXP" type="text" id="Experiment3Duration" placeholder="Experiment-III Duration Of Experiment" name="Experiment3Duration">
+    </div>
+        <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
+    </form>
+    <form action="/profile" method="POST">
+        <div class="form-group">
+        <% if (Experiment3Treatment && Experiment3Treatment.length > 0) { %>
+            <% Experiment3Treatment.forEach(function(Experiment3Treatment) { %>
+                <label for="Experiment3Treatment"><h1><%= Experiment3Treatment %></h1></label>
+            <% }); %>
+        <% } else { %>
+            <p>You haven't added any favorite Experiment-III yet.</p>
+        <% } %>
+        <input id="job-title" class="form-control EXP" type="text" id="Experiment3Treatment" placeholder="Experiment-III Treatment Details" name="Experiment3Treatment">
+    </div>
+        <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
+    </form>
+    <form action="/profile" method="POST">
+        <div class="form-group">
+        <% if (Experiment3Data && Experiment3Data.length > 0) { %>
+            <% Experiment3Data.forEach(function(Experiment3Data) { %>
+                <label for="Experiment3Data"><h1><%= Experiment3Data %></h1></label>
+            <% }); %>
+        <% } else { %>
+            <p>You haven't added any favorite Experiment-III yet.</p>
+        <% } %>
+        <input id="job-title" class="form-control EXP" type="text" id="Experiment3Data" placeholder="Experiment-III Data Details" name="Experiment3Data">
+    </div>
+        <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
+    </form>
+
+
+
+
+    <form action="/profile" method="POST">
+        <div class="form-group">
+        <% if (Experiment4Year && Experiment4Year.length > 0) { %>
+            <% Experiment4Year.forEach(function(Experiment4Year) { %>
+                <label for="Experiment4Year"><h1><%= Experiment4Year %></h1></label>
+            <% }); %>
+        <% } else { %>
+            <p>You haven't added any favorite Experiment-IIII yet.</p>
+        <% } %>
+        <input id="job-title" class="form-control EXP" type="text" id="Experiment4Year" placeholder="Experiment-IIII Year Of Execution" name="Experiment4Year">
+    </div>
+        <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
+    </form>
+    <form action="/profile" method="POST">
+        <div class="form-group">
+        <% if (Experiment4Duration && Experiment4Duration.length > 0) { %>
+            <% Experiment4Duration.forEach(function(Experiment4Duration) { %>
+                <label for="Experiment4Duration"><h1><%= Experiment4Duration %></h1></label>
+            <% }); %>
+        <% } else { %>
+            <p>You haven't added any favorite Experiment-IIII yet.</p>
+        <% } %>
+        <input id="job-title" class="form-control EXP" type="text" id="Experiment4Duration" placeholder="Experiment-IIII Duration Of Experiment" name="Experiment4Duration">
+    </div>
+        <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
+    </form>
+    <form action="/profile" method="POST">
+        <div class="form-group">
+        <% if (Experiment4Treatment && Experiment4Treatment.length > 0) { %>
+            <% Experiment4Treatment.forEach(function(Experiment4Treatment) { %>
+                <label for="Experiment4Treatment"><h1><%= Experiment4Treatment %></h1></label>
+            <% }); %>
+        <% } else { %>
+            <p>You haven't added any favorite Experiment-IIII yet.</p>
+        <% } %>
+        <input id="job-title" class="form-control EXP" type="text" id="Experiment4Treatment" placeholder="Experiment-IIII Treatment Details" name="Experiment4Treatment">
+    </div>
+        <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
+    </form>
+    <form action="/profile" method="POST">
+        <div class="form-group">
+        <% if (Experiment4Data && Experiment4Data.length > 0) { %>
+            <% Experiment4Data.forEach(function(Experiment4Data) { %>
+                <label for="Experiment4Data"><h1><%= Experiment4Data %></h1></label>
+            <% }); %>
+        <% } else { %>
+            <p>You haven't added any favorite Experiment-IIII yet.</p>
+        <% } %>
+        <input id="job-title" class="form-control EXP" type="text" id="Experiment4Data" placeholder="Experiment-IIII Data Details" name="Experiment4Data">
+    </div>
+        <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
+    </form> -->
+    
+    
+    <% for (let i = 0; i < Math.max(ExecutionT.length, DurationT.length, DataDT.length); i++,TreatmentDetailsP.length, R11P.length, R21P.length, R31P.length) { %>
+        <h5 class="Th5">Topic :- <%- i < DataDT.length ? DataDT[i] : '' %> </h5>
+        <div class="TD TDfirst">
+        <table>
+        <div class="form-group">
+            <tr>
+                <th>Experiment Sub-Title </th>
+                <th>Year Of Execution</th>
+                <th>Duration</th>
+            </tr>
+                <tr>
+                    <td data-heading="Experiment Sub-Title"><%- i < DataDT.length ? DataDT[i] : '' %></td>
+                    <td data-heading="Year Of Execution"><%= i < ExecutionT.length ? ExecutionT[i] : '' %></td>
+                    <td data-heading="Duration"><%= i < DurationT.length ? DurationT[i] : '' %></td>
+                    
+                </tr>
+                
+                
+                
+    </div>
+    </table>
+</div>
+<div class="TD TDsecond">
+    <table>
+        <div class="form-group">
+            <tr>
+                <th>Treatment Details</th>
+                <th>R1</th>
+                <th>Mean</th>
+                <th>R2</th>
+                <th>Mean</th>
+                <th>R3</th>
+                <th>Mean</th>
+            </tr>
+                <tr>
+                    <!-- <td data-heading="Treatment Details"><%= i < TreatmentDetailsP.length ? TreatmentDetailsP[i] : '' %></td> -->
+                    <td data-heading="Treatment Details">
+                        <div id="treatment-details-div">
+                            <%- i < TreatmentDetailsP.length ? TreatmentDetailsP[i] : '' %>
+                        </div>
+                    </td>
+                    
+                    <td>
+                        <table class="sub-table TNEW">
+                            <tr>
+                                <td data-heading="R11"><%= i < R11P.length ? R11P[i] : '' %></td>
+                            </tr>
+                        </table>
+                        <table class="sub-table TNEW">
+                            <tr>
+                                <td data-heading="R12"><%= i < R12P.length ? R12P[i] : '' %></td>
+                            </tr>
+                        </table>
+                        <table class="sub-table TNEW">
+                            <tr>
+                                <td data-heading="R13"><%= i < R13P.length ? R13P[i] : '' %></td>
+                            </tr>
+                        </table>
+                        <table class="sub-table TNEW">
+                            <tr>
+                                <td data-heading="R14"><%= i < R14P.length ? R14P[i] : '' %></td>
+                            </tr>
+                        </table>
+                        <table class="sub-table TNEW">
+                            <tr>
+                                <td data-heading="R15"><%= i < R15P.length ? R15P[i] : '' %></td>
+                            </tr>
+                        </table>
+                        
+                    </td>
+                    <td data-heading="Mean">
+                        <% 
+                        const r11ValuePP = i < R11P.length && !isNaN(parseFloat(R11P[i])) ? parseFloat(R11P[i]) : 0;
+                        const r12ValuePP = i < R12P.length && !isNaN(parseFloat(R12P[i])) ? parseFloat(R12P[i]) : 0;
+                        const r13ValuePP = i < R13P.length && !isNaN(parseFloat(R13P[i])) ? parseFloat(R13P[i]) : 0;
+                        const r14ValuePP = i < R14P.length && !isNaN(parseFloat(R14P[i])) ? parseFloat(R14P[i]) : 0;
+                        const r15ValuePP = i < R15P.length && !isNaN(parseFloat(R15P[i])) ? parseFloat(R15P[i]) : 0;
+                        const meanValuePP = (r11ValuePP+r12ValuePP+r13ValuePP+r14ValuePP+r15ValuePP) / 5;
+                        %>
+                        <%= meanValuePP.toFixed(2) %>
+                    </td>
+                    <td>
+                        <table class="sub-table TNEW">
+                            <tr>
+                                <td data-heading="R21"><%= i < R21P.length ? R21P[i] : '' %></td>
+                            </tr>
+                        </table>
+                        <table class="sub-table TNEW">
+                            <tr>
+                                <td data-heading="R22"><%= i < R22P.length ? R22P[i] : '' %></td>
+                            </tr>
+                        </table>
+                        <table class="sub-table TNEW">
+                            <tr>
+                                <td data-heading="R23"><%= i < R23P.length ? R23P[i] : '' %></td>
+                            </tr>
+                        </table>
+                        <table class="sub-table TNEW">
+                            <tr>
+                                <td data-heading="R24"><%= i < R24P.length ? R24P[i] : '' %></td>
+                            </tr>
+                        </table>
+                        <table class="sub-table TNEW">
+                            <tr>
+                                <td data-heading="R25"><%= i < R25P.length ? R25P[i] : '' %></td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td data-heading="Mean">
+                        <% 
+                        const r21ValuePPP = i < R21P.length && !isNaN(parseFloat(R21P[i])) ? parseFloat(R21P[i]) : 0;
+                        const r22ValuePPP = i < R22P.length && !isNaN(parseFloat(R22P[i])) ? parseFloat(R22P[i]) : 0;
+                        const r23ValuePPP = i < R23P.length && !isNaN(parseFloat(R23P[i])) ? parseFloat(R23P[i]) : 0;
+                        const r24ValuePPP = i < R24P.length && !isNaN(parseFloat(R24P[i])) ? parseFloat(R24P[i]) : 0;
+                        const r25ValuePPP = i < R25P.length && !isNaN(parseFloat(R25P[i])) ? parseFloat(R25P[i]) : 0;
+                        const meanValuePPP = (r21ValuePPP+r22ValuePPP+r23ValuePPP+r24ValuePPP+r25ValuePPP) / 5;
+                        %>
+                        <%= meanValuePPP.toFixed(2) %>
+                    </td>
+                    <td>
+                        <table class="sub-table TNEW">
+                            <tr>
+                                <td data-heading="R31"><%= i < R31P.length ? R31P[i] : '' %></td>
+                            </tr>
+                        </table>
+                        <table class="sub-table TNEW">
+                            <tr>
+                                <td data-heading="R32"><%= i < R32P.length ? R32P[i] : '' %></td>
+                            </tr>
+                        </table>
+                        <table class="sub-table TNEW">
+                            <tr>
+                                <td data-heading="R33"><%= i < R33P.length ? R33P[i] : '' %></td>
+                            </tr>
+                        </table>
+                        <table class="sub-table TNEW">
+                            <tr>
+                                <td data-heading="R34"><%= i < R34P.length ? R34P[i] : '' %></td>
+                            </tr>
+                        </table>
+                        <table class="sub-table TNEW">
+                            <tr>
+                                <td data-heading="R35"><%= i < R35P.length ? R35P[i] : '' %></td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td data-heading="Mean">
+                        <% 
+                        const r31ValueP = i < R31P.length && !isNaN(parseFloat(R31P[i])) ? parseFloat(R31P[i]) : 0;
+                        const r32ValueP = i < R32P.length && !isNaN(parseFloat(R32P[i])) ? parseFloat(R32P[i]) : 0;
+                        const r33ValueP = i < R33P.length && !isNaN(parseFloat(R33P[i])) ? parseFloat(R33P[i]) : 0;
+                        const r34ValueP = i < R34P.length && !isNaN(parseFloat(R34P[i])) ? parseFloat(R34P[i]) : 0;
+                        const r35ValueP = i < R35P.length && !isNaN(parseFloat(R35P[i])) ? parseFloat(R35P[i]) : 0;
+                        const meanValueP = (r31ValueP+r32ValueP+r33ValueP+r34ValueP+r35ValueP) / 5;
+                        %>
+                        <%= meanValueP.toFixed(2) %>
+                    </td>
+            
+                    <td>
+                        <form action="/delete" method="POST">
+                            <input type="hidden" name="rowIndex" value="<%= i %>_profile">
+                            <button id="job-post-button" class="btn btn-danger mt-3" type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+    </div>
+</table>
+</div>
+<hr><hr>
+<%
+}
+%>
+
+    <hr>
+    <form action="/profile" method="POST"> 
+        <div class="TD TDfirst">
+        <table>
+        <div class="form-group">
+            <tr>
+                <th>Experiment Sub-Title </th>
+                <th>Year Of Execution</th>
+                <th>Duration</th>
+            </tr>
+            <% for (let i = 0; i < Math.max(ExecutionT.length, DurationT.length, DataDT.length); i++) { %>
+                <!-- <tr>
+                    <td data-heading="Experiment Sub-Title"><%- i < DataDT.length ? DataDT[i] : '' %></td>
+                    <td data-heading="Year Of Execution"><%= i < ExecutionT.length ? ExecutionT[i] : '' %></td>
+                    <td data-heading="Duration"><%= i < DurationT.length ? DurationT[i] : '' %></td>
+                    
+                </tr> -->
+                
+                <% } %>
+                
+                
+                
+                <tr>
+                    <td>
+                        <textarea id="textarea" placeholder="Sub-Title if Experiment" name="DataDT"></textarea>
+                        </td>
+                    <td><input type="text" placeholder="Year Of Execution" name="ExecutionT"></td>
+                    <td><input type="text" placeholder="Duration" name="DurationT"></td>
+                </tr>
+    </div>
+    </table>
+</div>
+        <!-- </form>
+    <form action="/profile" method="POST">  -->
+        <div class="TD TDsecond">
+            <table>
+                <div class="form-group">
+                    <tr>
+                        <th>Treatment Details</th>
+                        <th>R1</th>
+                        <th>Mean</th>
+                        <th>R2</th>
+                        <th>Mean</th>
+                        <th>R3</th>
+                        <th>Mean</th>
+                    </tr>
+                    <%
+                        const maxArrayLength = Math.max(TreatmentDetailsP.length, R11P.length, R21P.length, R31P.length);
+                        for (let i = 0; i < maxArrayLength; i++) {
+                            // Check if there is valid data in at least one of the arrays
+                            if (i < TreatmentDetailsP.length || i < R11P.length || i < R21P.length || i < R31P.length) {
+                        %>
+                        <!-- <td data-heading="Treatment Details"><%= i < TreatmentDetailsP.length ? TreatmentDetailsP[i] : '' %></td> -->
+                        <!-- <tr>
+                            <td data-heading="Treatment Details">
+                                <div id="treatment-details-div">
+                                    <%- i < TreatmentDetailsP.length ? TreatmentDetailsP[i] : '' %>
+                                </div>
+                            </td>
+                            
+                            <td>
+                                <table class="sub-table TNEW">
+                                    <tr>
+                                        <td data-heading="R11"><%= i < R11P.length ? R11P[i] : '' %></td>
+                                    </tr>
+                                </table>
+                                <table class="sub-table TNEW">
+                                    <tr>
+                                        <td data-heading="R12"><%= i < R12P.length ? R12P[i] : '' %></td>
+                                    </tr>
+                                </table>
+                                <table class="sub-table TNEW">
+                                    <tr>
+                                        <td data-heading="R13"><%= i < R13P.length ? R13P[i] : '' %></td>
+                                    </tr>
+                                </table>
+                                <table class="sub-table TNEW">
+                                    <tr>
+                                        <td data-heading="R14"><%= i < R14P.length ? R14P[i] : '' %></td>
+                                    </tr>
+                                </table>
+                                <table class="sub-table TNEW">
+                                    <tr>
+                                        <td data-heading="R15"><%= i < R15P.length ? R15P[i] : '' %></td>
+                                    </tr>
+                                </table>
+                                
+                            </td>
+                            <td data-heading="Mean">
+                                <% 
+                                const r11ValuePP = i < R11P.length && !isNaN(parseFloat(R11P[i])) ? parseFloat(R11P[i]) : 0;
+                                const r12ValuePP = i < R12P.length && !isNaN(parseFloat(R12P[i])) ? parseFloat(R12P[i]) : 0;
+                                const r13ValuePP = i < R13P.length && !isNaN(parseFloat(R13P[i])) ? parseFloat(R13P[i]) : 0;
+                                const r14ValuePP = i < R14P.length && !isNaN(parseFloat(R14P[i])) ? parseFloat(R14P[i]) : 0;
+                                const r15ValuePP = i < R15P.length && !isNaN(parseFloat(R15P[i])) ? parseFloat(R15P[i]) : 0;
+                                const meanValuePP = (r11ValuePP+r12ValuePP+r13ValuePP+r14ValuePP+r15ValuePP) / 5;
+                                %>
+                                <%= meanValuePP.toFixed(2) %>
+                            </td>
+                            <td>
+                                <table class="sub-table TNEW">
+                                    <tr>
+                                        <td data-heading="R21"><%= i < R21P.length ? R21P[i] : '' %></td>
+                                    </tr>
+                                </table>
+                                <table class="sub-table TNEW">
+                                    <tr>
+                                        <td data-heading="R22"><%= i < R22P.length ? R22P[i] : '' %></td>
+                                    </tr>
+                                </table>
+                                <table class="sub-table TNEW">
+                                    <tr>
+                                        <td data-heading="R23"><%= i < R23P.length ? R23P[i] : '' %></td>
+                                    </tr>
+                                </table>
+                                <table class="sub-table TNEW">
+                                    <tr>
+                                        <td data-heading="R24"><%= i < R24P.length ? R24P[i] : '' %></td>
+                                    </tr>
+                                </table>
+                                <table class="sub-table TNEW">
+                                    <tr>
+                                        <td data-heading="R25"><%= i < R25P.length ? R25P[i] : '' %></td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td data-heading="Mean">
+                                <% 
+                                const r21ValuePPP = i < R21P.length && !isNaN(parseFloat(R21P[i])) ? parseFloat(R21P[i]) : 0;
+                                const r22ValuePPP = i < R22P.length && !isNaN(parseFloat(R22P[i])) ? parseFloat(R22P[i]) : 0;
+                                const r23ValuePPP = i < R23P.length && !isNaN(parseFloat(R23P[i])) ? parseFloat(R23P[i]) : 0;
+                                const r24ValuePPP = i < R24P.length && !isNaN(parseFloat(R24P[i])) ? parseFloat(R24P[i]) : 0;
+                                const r25ValuePPP = i < R25P.length && !isNaN(parseFloat(R25P[i])) ? parseFloat(R25P[i]) : 0;
+                                const meanValuePPP = (r21ValuePPP+r22ValuePPP+r23ValuePPP+r24ValuePPP+r25ValuePPP) / 5;
+                                %>
+                                <%= meanValuePPP.toFixed(2) %>
+                            </td>
+                            <td>
+                                <table class="sub-table TNEW">
+                                    <tr>
+                                        <td data-heading="R31"><%= i < R31P.length ? R31P[i] : '' %></td>
+                                    </tr>
+                                </table>
+                                <table class="sub-table TNEW">
+                                    <tr>
+                                        <td data-heading="R32"><%= i < R32P.length ? R32P[i] : '' %></td>
+                                    </tr>
+                                </table>
+                                <table class="sub-table TNEW">
+                                    <tr>
+                                        <td data-heading="R33"><%= i < R33P.length ? R33P[i] : '' %></td>
+                                    </tr>
+                                </table>
+                                <table class="sub-table TNEW">
+                                    <tr>
+                                        <td data-heading="R34"><%= i < R34P.length ? R34P[i] : '' %></td>
+                                    </tr>
+                                </table>
+                                <table class="sub-table TNEW">
+                                    <tr>
+                                        <td data-heading="R35"><%= i < R35P.length ? R35P[i] : '' %></td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td data-heading="Mean">
+                                <% 
+                                const r31ValueP = i < R31P.length && !isNaN(parseFloat(R31P[i])) ? parseFloat(R31P[i]) : 0;
+                                const r32ValueP = i < R32P.length && !isNaN(parseFloat(R32P[i])) ? parseFloat(R32P[i]) : 0;
+                                const r33ValueP = i < R33P.length && !isNaN(parseFloat(R33P[i])) ? parseFloat(R33P[i]) : 0;
+                                const r34ValueP = i < R34P.length && !isNaN(parseFloat(R34P[i])) ? parseFloat(R34P[i]) : 0;
+                                const r35ValueP = i < R35P.length && !isNaN(parseFloat(R35P[i])) ? parseFloat(R35P[i]) : 0;
+                                const meanValueP = (r31ValueP+r32ValueP+r33ValueP+r34ValueP+r35ValueP) / 5;
+                                %>
+                                <%= meanValueP.toFixed(2) %>
+                            </td>
+                    
+                            <td>
+                                <form action="/delete" method="POST">
+                                    <input type="hidden" name="rowIndex" value="<%= i %>_profile">
+                                    <button id="job-post-button" class="btn btn-danger mt-3" type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr> -->
+                        <%
+                    }
+                }
+                %>
+                    
+                    <tr>
+                        <td>
+                            <textarea id="multiline-inpt" placeholder="Treatment Details" name="TreatmentDetailsP" rows="10" cols="20"></textarea>
+                        </td>                        
+                        <td class="put">
+                            <% for (let j = 0; j < 5; j++) { %>
+                                <input data-heading="R2<%= j + 1 %>" type="text" placeholder="R1<%= j + 1 %>" name="R1<%= j + 1 %>P">
+                            <% } %>
+                        </td>
+                        <td data-heading="Mean" class="put"><input type="text" placeholder="Mean" name="MeanP"></td>
+                        <td class="put">
+                            <% for (let j = 0; j < 5; j++) { %>
+                                <input data-heading="R2<%= j + 1 %>" type="text" placeholder="R2<%= j + 1 %>" name="R2<%= j + 1 %>P">
+                            <% } %>
+                        </td>
+                        <td data-heading="Mean" class="put"><input type="text" placeholder="Mean" name="MeanP"></td>
+                        <td class="put">
+                            <% for (let j = 0; j < 5; j++) { %>
+                                <input data-heading="R2<%= j + 1 %>" type="text" placeholder="R3<%= j + 1 %>" name="R3<%= j + 1 %>P">
+                            <% } %>
+                        </td>
+                        <td data-heading="Mean" class="put"><input type="text" placeholder="Mean" name="MeanP"></td>
+                        <td><button id="job-post-button" class="btn btn-success mt-3" type="submit">Submit</button></td>
+                    </tr>
+                </div>
+            </table>
+        </div>
+        <hr><hr>
+        <div class="TD TDfirst">
+        <table>
+            <div class="form-group">
+                <tr>
+                    <th>Treatment Details</th>
+                    <th>R1</th>
+                    <th>R2</th>
+                    <th>R3</th>
+                    <th>Mean</th>
+                </tr>
+                <%
+                    const maxArrayLengthN = Math.max(TreatmentDetailsP.length, R11P.length, R21P.length, R31P.length);
+                    for (let i = 0; i < maxArrayLengthN; i++) {
+                        // Check if there is valid data in at least one of the arrays
+                        if (i < TreatmentDetailsP.length || i < R11P.length || i < R21P.length || i < R31P.length) {
+                    %>
+                    <tr>
+                        <!-- <td data-heading="Treatment Details"><%= i < TreatmentDetailsP.length ? TreatmentDetailsP[i] : '' %></td> -->
+                        <td data-heading="Treatment Details">
+                            <div id="treatment-details-div">
+                                <%- i < TreatmentDetailsP.length ? TreatmentDetailsP[i] : '' %>
+                            </div>
+                        </td>
+                        
+                        
+                        <td data-heading="R1">
+                            <% 
+                            const r11ValuePP = i < R11P.length && !isNaN(parseFloat(R11P[i])) ? parseFloat(R11P[i]) : 0;
+                            const r12ValuePP = i < R12P.length && !isNaN(parseFloat(R12P[i])) ? parseFloat(R12P[i]) : 0;
+                            const r13ValuePP = i < R13P.length && !isNaN(parseFloat(R13P[i])) ? parseFloat(R13P[i]) : 0;
+                            const r14ValuePP = i < R14P.length && !isNaN(parseFloat(R14P[i])) ? parseFloat(R14P[i]) : 0;
+                            const r15ValuePP = i < R15P.length && !isNaN(parseFloat(R15P[i])) ? parseFloat(R15P[i]) : 0;
+                            const meanValuePP = (r11ValuePP+r12ValuePP+r13ValuePP+r14ValuePP+r15ValuePP) / 5;
+                            %>
+                            <%= meanValuePP.toFixed(2) %>
+                        </td>
+                        <td data-heading="R2">
+                            <% 
+                            const r21ValuePPP = i < R21P.length && !isNaN(parseFloat(R21P[i])) ? parseFloat(R21P[i]) : 0;
+                            const r22ValuePPP = i < R22P.length && !isNaN(parseFloat(R22P[i])) ? parseFloat(R22P[i]) : 0;
+                            const r23ValuePPP = i < R23P.length && !isNaN(parseFloat(R23P[i])) ? parseFloat(R23P[i]) : 0;
+                            const r24ValuePPP = i < R24P.length && !isNaN(parseFloat(R24P[i])) ? parseFloat(R24P[i]) : 0;
+                            const r25ValuePPP = i < R25P.length && !isNaN(parseFloat(R25P[i])) ? parseFloat(R25P[i]) : 0;
+                            const meanValuePPP = (r21ValuePPP+r22ValuePPP+r23ValuePPP+r24ValuePPP+r25ValuePPP) / 5;
+                            %>
+                            <%= meanValuePPP.toFixed(2) %>
+                        </td>
+                        <td data-heading="R3">
+                            <% 
+                            const r31ValueP = i < R31P.length && !isNaN(parseFloat(R31P[i])) ? parseFloat(R31P[i]) : 0;
+                            const r32ValueP = i < R32P.length && !isNaN(parseFloat(R32P[i])) ? parseFloat(R32P[i]) : 0;
+                            const r33ValueP = i < R33P.length && !isNaN(parseFloat(R33P[i])) ? parseFloat(R33P[i]) : 0;
+                            const r34ValueP = i < R34P.length && !isNaN(parseFloat(R34P[i])) ? parseFloat(R34P[i]) : 0;
+                            const r35ValueP = i < R35P.length && !isNaN(parseFloat(R35P[i])) ? parseFloat(R35P[i]) : 0;
+                            const meanValueP = (r31ValueP+r32ValueP+r33ValueP+r34ValueP+r35ValueP) / 5;
+                            %>
+                            <%= meanValueP.toFixed(2) %>
+                        </td>
+                        <td data-heading="Mean">
+                            <% 
+                            const meanValueM = (meanValuePP+meanValuePPP+meanValueP) / 3;
+                            %>
+                            <%= meanValueM.toFixed(2) %>
+                        </td>
+                    </tr>
+                    <%
+                }
+            }
+            %>
+                
+                
+            </div>
+        </table>
+    </div>
+    <hr>
+    <br><br>
+    </form>
+
+    <form action="/profile" method="POST">
+        <div class="form-group">
+        <% if (Year && Year.length > 0) { %>
+            <% Year.forEach(function(Year) { %>
+                <label for="Year"><h1><%= Year %></h1></label>
+            <% }); %>
+        <% } else { %>
+            <p>You haven't added any favorite Year yet.</p>
+        <% } %>
+        <input id="job-title" class="form-control" type="text" id="Year" placeholder="Year of execution" name="Year">
+    </div>
+        <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
+    </form>
+    <form action="/profile" method="POST">
+        <div class="form-group">
+        <% if (Duration && Duration.length > 0) { %>
+            <% Duration.forEach(function(Duration) { %>
+                <label for="Duration"><h1><%= Duration %></h1></label>
+            <% }); %>
+        <% } else { %>
+            <p>You haven't added any favorite Duration yet.</p>
+        <% } %>
+        <input id="job-title" class="form-control" type="text" id="Duration" placeholder="Duration of experiment" name="Duration">
+    </div>
+        <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
+    </form>
+    <form action="/profile" method="POST">
+        <div class="form-group">
+        <% if (Treatment && Treatment.length > 0) { %>
+            <% Treatment.forEach(function(Treatment) { %>
+                <label for="Treatment"><h1><%= Treatment %></h1></label>
+            <% }); %>
+        <% } else { %>
+            <p>You haven't added any favorite Treatment yet.</p>
+        <% } %>
+        <input id="job-title" class="form-control EXP" type="text" id="Treatment" placeholder="Treatment Details:" name="Treatment">
+    </div>
+        <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
+    </form>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+        <!-- Add other form fields here -->
+        <input type="hidden" name="sourcePage" value="<%= sourcePage %>">
+        <input  id="fileIN" type="file" name="file">
+    </div>
+        <button id="job-post-button" class="btn btn-primary mt-3" type="submit">Upload File</button>
+    </form>
+    
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+</div>
+  </section>
+</body>
+<script>
+    $(window).scroll(function(e){
+  parallax();
+});
+
+function parallax(){
+  var scrolled = $(window).scrollTop();
+  $('.background').css('top',-(scrolled*0.15)+'px');
+}
+</script>
+
+
+
+
+
+</html>
