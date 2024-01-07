@@ -551,15 +551,17 @@ nav button{
 }
 .header .navbar{
   position: absolute;
-  top: 110%;
+  display: flex;
+  top: 160%;
   right: -110%;
-  width: 30rem;
+  width: 41rem;
   box-shadow: 0px 0px 60px 0px black;
   border-radius: .5rem;
   background: #fff;
+  flex-direction: column;
 }
 .header .navbar.active {
-  right: 10%;
+  right: 16%;
   transition: .4s linear;
 }
 .header .navbar a{
