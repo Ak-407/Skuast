@@ -554,15 +554,15 @@ nav button{
   display: flex;
   top: 160%;
   right: -110%;
-  width: 41rem;
+  width: 100%;
   box-shadow: 0px 0px 60px 0px black;
   border-radius: .5rem;
   background: #fff;
   flex-direction: column;
 }
 .header .navbar.active {
-  right: 16%;
-  transition: .4s linear;
+  right: 0%;
+  transition: .99s ease-in-out;
 }
 .header .navbar a{
   font-size: 3.9rem;
