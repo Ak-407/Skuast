@@ -268,5 +268,12 @@
       border-left: none; /* Remove left border for the first sub-column */
       padding-left: 0; /* Remove left padding for the first sub-column */
   }
+    input{
+        margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+        width:100%;
+    }
 }
 
