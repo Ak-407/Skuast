@@ -4,12 +4,232 @@
 
 
 
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap");
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Quicksand", sans-serif;
+}
+
+img {
+  width: 100%;
+  pointer-events: none;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  background: url("https://static.vecteezy.com/system/resources/previews/013/138/560/original/multi-layers-green-color-texture-3d-papercut-layers-in-gradient-banner-abstract-paper-cut-art-background-design-for-website-template-topography-map-concept-or-smooth-origami-paper-cut-vector.jpg");
+}
+
+
+
+
+
+
+
+.navbar {
+  z-index: 1;
+}
+
+
+
+
+
+
+.logo{
+  width: 50px;
+  height: 50px;
+}
+
+
+
+
+
+
+.iicon{
+  width: 40px; 
+  font-size: 1.4rem;
+}
+.iicon2{
+  width: 50px;
+  font-size: 1.4rem;
+  margin-left: -21px;
+}
+.iicon3{
+  width: 50px; 
+  font-size: 1.4rem;
+}
+
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.3rem 5%;
+  background-color: #fff;
+  box-shadow: 0px 0px 30px 4px black;
+  border-radius: 0px 0px 60px 60px;
+  font-family: 'Bai Jamjuree', sans-serif !important;
+}
+.header .logo{
+  font-size: 2rem;
+  font-weight: bolder;
+  text-decoration: none;
+  display: flex;
+}
+.logo i{
+  margin-right: 10px;
+  font-size: 3rem;
+}
+.header a{
+  color:black;
+}
+.header .navbar a{
+  color:grey;
+  font-size: 1.3rem;
+  font-weight: bolder;
+  margin: 0 1rem;
+  text-decoration: none;
+}
+.header .navbar a:hover{
+  color: rgb(61, 176, 61);
+}
+.header .icons div{
+    height: 3.5rem;
+    width: 5.5rem;
+    line-height: 4.5rem;
+    border-radius: .5rem;
+    color: black;
+    font-size: 1rem;
+    margin-right:.3rem ;
+    text-align: center;
+    cursor: pointer;
+}
+.header .icons a{
+  height: 2.5rem;
+  width: 4.5rem;
+  line-height: 4.5rem;
+  border-radius: .5rem;
+  color: black;
+  font-size: 1.5rem;
+  margin-right:.5rem ;
+  text-align: center;
+  cursor: pointer;
+}
+.header .icons div:hover{
+  background-color: silver;
+  color: white;
+}
+#menu-btn{
+  display: none;
+}
+.btn{
+  margin-top: 1rem;
+  display: inline-block;
+  padding: .8rem 3rem;
+  font-size: 1.7rem;
+  border-radius:3rem ;
+  border: .2rem solid black;
+  cursor: pointer;
+}
+.btn:hover{
+  border: .2rem solid var(--light-color);
+  color: var(--green);
+  background: black;
+}
+.header .shopping-cart .btn{
+  display: block;
+  text-align: center;
+  margin: 1rem 0;
+}
+.content button{
+  background-color: transparent;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Snow */
+
+#particles-js {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+main {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  place-items: center;
+  background: #f6f6f6;
+  width: min(1000px, 95%);
+  border-radius: 20px 18px 18px 20px;
+}
+
+
+main img {
+  border-radius: 18px 0 0 18px;
+  height: 76vh;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* dlfcknelcknedlcn */
 
 body{
-    background-image: url('/wallpaperflare.com_wallpaper\ \(4\).jpg') !important;
-    background-size: 100% 100% !important;
+    /* background-image: url('/wallpaperflare.com_wallpaper\ \(4\).jpg') !important; */
+    /* background-size: 100% 100% !important;
     background-position-y: 330px;
-    background-position-x: -350px;
+    background-position-x: -350px; */
     padding: 0 !important;
     margin: 0 !important;
     font-family: 'Bai Jamjuree', sans-serif !important;
@@ -32,8 +252,6 @@ nav .a{
     font-size: 1.3rem !important;
     background-color: white !important;
     width: 829px !important;
-    /* height: 300px !important;
-    padding: 30px !important; */
 }
 #Outerr {
   display: flex;
@@ -62,42 +280,12 @@ nav .a{
 .LL{
   width: 300px ;
 }
-/* .SB {
-   flex: 100%;
-   order: 3;
-   width: 50px !important;
-} */
-/* .FB{
-  position: absolute;
-  left: 360px;
-}
-.SB{
-  position: absolute;
-  right: 560px;
-  bottom: 60px;
-}
-.SB .raise{
-  width: 280px;
-}
-.TB{
-  position: absolute;
-  right: 330px;
-}
-.FB .raise{
-  width: 280px;
-} */
-
 
 .Outer h1 {
   font-size: 2.3rem !important;
   color: black;
   margin-bottom: 2.4rem;
 }
-/* .Outer form{ */
-    /* line-height: 100px !important; */
-  /* padding: 20px;
-  margin: 10px; 
-} */
 .raise:hover,
 .raise:focus {
   box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
@@ -108,7 +296,9 @@ nav .a{
   --color: #000000;
   --hover: #28ae3c;
 }
-  
+  .h1Head{
+    margin-bottom: 89px;
+  }
   button {
     color: var(--color) !important;
     transition: 0.25s !important;
@@ -126,6 +316,8 @@ nav .a{
     margin: 0.5em !important;
     padding: 1em 20px !important;
     border-radius:10px 1px !important;
+    margin-bottom: 50px !important;
+    font-weight: bolder !important;
   }
   
   
@@ -139,16 +331,75 @@ nav .a{
 
 @media (max-width: 991px){
   body{
-    background-image: url('/wallpaperflare.com_wallpaper\ \(3\).jpg') !important;
-    background-size:100% 100vh !important;
+    /* background-image: url('/wallpaperflare.com_wallpaper\ \(3\).jpg') !important;
+    background-size:100% 100vh !important; */
     /* background-repeat: no-repeat; */
-    background-position-y: 300px !important;
-    background-position-x: -300px !important;
-    background-position: center;
+    /* background-position-y: 300px !important;
+    background-position-x: -300px !important; */
+    /* background-position: center; */
     padding: 0 !important;
     margin: 0 !important;
     font-family: 'Bai Jamjuree', sans-serif !important;
 
+}
+img {
+  width: 100%;
+  pointer-events: none;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  background: url("https://static.vecteezy.com/system/resources/previews/013/138/560/original/multi-layers-green-color-texture-3d-papercut-layers-in-gradient-banner-abstract-paper-cut-art-background-design-for-website-template-topography-map-concept-or-smooth-origami-paper-cut-vector.jpg");
+}
+
+/* Snow */
+
+#particles-js {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+main {
+  font-size: 3rem;
+  display: flex;
+  grid-template-columns: 30% 70%;
+  place-items: center;
+  background: #f6f6f6;
+  height: min(95%, 100%);
+  width: min(1000px, 95%);
+  border-radius: 30px;
+  justify-items: center;
+    align-items: center;
+    flex-direction: column;
+    opacity: 90%;
+}
+.h1Head{
+  margin-top: 50px;
+  text-align: center;
+  font-size: 5rem;
+  font-weight: bolder;
+  margin-bottom: 30px !important;
+}
+button{
+  width: 800px !important;
+  height: 150px !important;
+
+}
+
+main img {
+  border-radius: 18px 0 0 18px;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+main{
+  margin-top: 0rem;
 }
 .navbar{
   z-index: 1;
@@ -190,16 +441,16 @@ nav button{
   left: 50%;
   transform: translate(-50%, -50%);
   align-items: center;
-    text-align: center !important;
-    border-radius: 20px !important;
-    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.9), 0 5px 5px 0 rgba(0, 0, 0, 0.24) !important;
-    margin: 10vh 0 0 0 !important;
-    font-size: 3.3rem !important;
-    background-color: white !important;
-    width: 890px !important;
-    height: 64% !important;
-    padding: 30px !important;
-    opacity: 90% !important;
+  text-align: center !important;
+  border-radius: 20px !important;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.9), 0 5px 5px 0 rgba(0, 0, 0, 0.24) !important;
+  margin: 10vh 0 0 0 !important;
+  font-size: 3.3rem !important;
+  background-color: white !important;
+  width: 890px !important;
+  height: 64% !important;
+  padding: 30px !important;
+  opacity: 90% !important;
 }
 .FB{
   position:static;
@@ -242,7 +493,7 @@ nav button{
     color: #000000 !important;
   }
   
-  .Outer button {
+   button {
     background: none !important;
     border: 5px solid !important;
     font: inherit !important;
@@ -250,8 +501,15 @@ nav button{
     margin: 0.5em !important;
     padding: 1em 1em !important;
     border-radius:70px 1px !important;
+    font-weight: bolder !important;
 }
-  
+.carousel-inner {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  height: 40vh;
+  border-radius: 30px;
+}
   code {
     color: #e4cb58 !important;
     font: inherit !important;
@@ -261,6 +519,119 @@ nav button{
     margin-right: 0%;
 }
     
+
+
+
+
+
+/* //////////////ahdkbckajbcla///////    copy   we do   ne vc       ///// */
+
+
+.header .icons a{
+  height: 2.5rem;
+  width: 4.5rem;
+  line-height: 4.5rem;
+  border-radius: .5rem;
+  color: black;
+  font-size: 3.5rem;
+  margin-right:.5rem ;
+  text-align: center;
+  cursor: pointer;
+}
+
+#menu-btn{
+  display: inline-block;
+  font-size: 7rem;
+  display: inline !important;
+}
+.icons a{
+  display: none;
+}
+.header .navbar{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 110%;
+  right: -110%;
+  width: 100%;
+  box-shadow: 0px 0px 60px 0px black;
+  border-radius: .5rem;
+  background: #fff;
+}
+.header .navbar.active {
+  right: 0%;
+  animation-fill-mode: backwards;
+  transition: 0.2s;
+}
+
+@keyframes butt {
+  from {
+    margin-top: 30px;
+    opacity: 0%;
+  }
+  to {
+    margin-top: 5px;
+  }
+}
+.header .navbar a{
+  font-size: 3.9rem;
+  display: block;
+}
+.features{
+  padding: 30px;
+}
+.features .box-container{
+  margin-top: 10px;
+}
+
+
+
+.iicon{
+  width: 100px; 
+  font-size: 4.4rem;
+}
+.iicon2{
+  width: 100px !important;
+  font-size: 4.4rem;
+  margin-left: -81px;
+}
+.iicon3{
+  width: 100px;
+  margin-left: -21px;
+  font-size: 4.4rem;
+}
+.logo{
+  width: 100px;
+  height: 100px;
+}
+.header .logo{
+  font-size: 4rem;
+  font-weight: bolder;
+  text-decoration: none;
+  display: flex;
+}
+
+
+
+.header {
+  margin-top: 0.5rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.3rem 7%;
+  background-color: #fff;
+  box-shadow: 0px 0px 70px 0px black;
+  border-radius: 60px 60px 60px 60px;
+  font-family: 'Bai Jamjuree', sans-serif !important;
+}
+
+
+
 }
 
 

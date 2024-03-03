@@ -8,15 +8,25 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const passport = require('passport');
-const initializePassport = require('./passport-config');
+const { initializePassport } = require('./passport-config');
+const rateLimit = require('express-rate-limit');
+const XLSX = require('xlsx');
+
+
 const flash = require('express-flash');
 const session = require('express-session');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
 const { log } = require('console');
+const { post } = require('jquery');
 const uploadsDir = path.join(__dirname, 'uploads');
 
+const loginLimiter = rateLimit({
+    windowMs: 1599 * 60 * 1000, // 15 minutes
+    max: 388, // Limit each IP to 3 login attempts per windowMs
+    message: 'Too many login attempts from this IP, please try again later.'
+});
 
 if (!fs.existsSync(uploadsDir)) {
     fs.mkdirSync(uploadsDir);
@@ -55,15 +65,46 @@ app.use(
         resave: true,
         saveUninitialized: true,
     })
-).env
+);
+
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Apply rate-limiting middleware to your login route(s)
+app.use('/login', loginLimiter);
+
 
 mongoose.set('strictQuery', true);
 mongoose.connect(
     'mongodb+srv://jsamaan:amaan123@cluster0.vz55wc0.mongodb.net/jsamaan?retryWrites=true&w=majority',
     { useNewUrlParser: true, useUnifiedTopology: true }
 );
+
+
+
+
+const BlockSchema = new mongoose.Schema({
+    extend: String,
+    R1: [String],
+    R2: [String],
+    R3: [String]
+});
+const BlockSchemaRCM = new mongoose.Schema({
+    extendRCM: String,
+    R1RCM: [String],
+    R2RCM: [String],
+    R3RCM: [String]
+});
+const BlockSchemaEXT = new mongoose.Schema({
+    extendEXT: String,
+    R1EXT: [String],
+    R2EXT: [String],
+    R3EXT: [String]
+});
+
+
+
+
 
 const LoginData = mongoose.Schema({
     username: String,
@@ -72,9 +113,14 @@ const LoginData = mongoose.Schema({
         default: false,
     },
     Advisor: [String],
+    blocks: [[BlockSchema]],
+    blocksRCM: [[BlockSchemaRCM]],
+    blocksEXT: [[BlockSchemaEXT]],
+    allData:[String],
     Crop: [String],
     Research: [String],
     Objectives:[String],
+    TDARR:[String],
     Experiment1Year: [String],
     Experiment1Duration: [String],
     Experiment1Treatment: [String],
@@ -95,21 +141,9 @@ const LoginData = mongoose.Schema({
     Duration: [String],
     Treatment: [String],
     TreatmentDetailsP: [String],
-    R11P: [String],
-    R12P: [String],
-    R13P: [String],
-    R14P: [String],
-    R15P: [String],
-    R21P: [String],
-    R22P: [String],
-    R23P: [String],
-    R24P: [String],
-    R25P: [String],
-    R31P: [String],
-    R32P: [String],
-    R33P: [String],
-    R34P: [String],
-    R35P: [String],
+    TC: [String],
+    TCRCM: [String],
+    TCEXT: [String],
     Faculty:[String],
     CropRCM:[String],
     ResearchRCM:[String],
@@ -118,9 +152,6 @@ const LoginData = mongoose.Schema({
     DurationRCM:[String],
     TreatmentRCM:[String],
     TreatmentDetailsRCM: [String],
-    R1RCM:[String],
-    R2RCM:[String],
-    R3RCM:[String],
     Principal:[String],
     CropEXT:[String],
     ResearchEXT:[String],
@@ -128,45 +159,9 @@ const LoginData = mongoose.Schema({
     executionEXT:[String],
     DurationEXT:[String],
     TreatmentEXT:[String],
-    TreatmentDetailsEXT:[String],
-    TreatmentDetailsEXT0:[String],
-    R1EXT:[String],
-    R2EXT:[String],
-    R3EXT:[String],
-    R11EXT:[String],
-    R12EXT:[String],
-    R13EXT:[String],
-    R14EXT:[String],
-    R15EXT:[String],
-    R21EXT:[String],
-    R22EXT:[String],
-    R23EXT:[String],
-    R24EXT:[String],
-    R25EXT:[String],
-    R31EXT:[String],
-    R32EXT:[String],
-    R33EXT:[String],
-    R34EXT:[String],
-    R35EXT:[String],
+    TreatmentDetailsPEXT:[String],
+    TreatmentDetailsPEXT0:[String],
     TreatmentDetailsRCM0:[String],
-    R1RCM:[String],
-    R2RCM:[String],
-    R3RCM:[String],
-    R11RCM:[String],
-    R12RCM:[String],
-    R13RCM:[String],
-    R14RCM:[String],
-    R15RCM:[String],
-    R21RCM:[String],
-    R22RCM:[String],
-    R23RCM:[String],
-    R24RCM:[String],
-    R25RCM:[String],
-    R31RCM:[String],
-    R32RCM:[String],
-    R33RCM:[String],
-    R34RCM:[String],
-    R35RCM:[String],
     ExecutionT: [String],
     DurationT: [String],
     TreatmentDT: [String],
@@ -191,6 +186,10 @@ const LoginData = mongoose.Schema({
     },
 
 });
+
+
+
+
 
 const logindata = mongoose.model('LoginData1', LoginData);
 const storage = multer.diskStorage({
@@ -240,6 +239,30 @@ app.post('/register', async (req, res) => {
 app.get('/ExternallyFundedProject', async (req, res) => {
     // Check if user is authenticated
     if (req.isAuthenticated() && req.user && req.user.username) {
+        const TCEXT = req.user.TCEXT;
+
+        const blocksEXT = req.user.blocksEXT;
+        console.log(blocksEXT);
+    
+        
+
+       
+
+          
+
+         
+          
+
+
+        
+
+
+
+
+
+
+
+        const allDataEXT = await logindata.find();
         const username = req.user.username.substring(0, req.user.username.indexOf('@'));
         const Principal = req.user.Principal;
         const CropEXT = req.user.CropEXT;
@@ -248,32 +271,17 @@ app.get('/ExternallyFundedProject', async (req, res) => {
         const executionEXT = req.user.executionEXT;
         const DurationEXT = req.user.DurationEXT;
         const TreatmentEXT = req.user.TreatmentEXT;
-        const TreatmentDetailsEXT = req.user.TreatmentDetailsEXT;
-        const TreatmentDetailsEXT0 = req.user.TreatmentDetailsEXT0;
-        const R1EXT = req.user.R1EXT;
-        const R2EXT = req.user.R2EXT;
-        const R3EXT = req.user.R3EXT;
-        const R11EXT = req.user.R11EXT;
-        const R12EXT = req.user.R12EXT;
-        const R13EXT = req.user.R13EXT;
-        const R14EXT = req.user.R14EXT;
-        const R15EXT = req.user.R15EXT;
-        const R21EXT = req.user.R21EXT;
-        const R22EXT = req.user.R22EXT;
-        const R23EXT = req.user.R23EXT;
-        const R24EXT = req.user.R24EXT;
-        const R25EXT = req.user.R25EXT;
-        const R31EXT = req.user.R31EXT;
-        const R32EXT = req.user.R32EXT;
-        const R33EXT = req.user.R33EXT;
-        const R34EXT = req.user.R34EXT;
-        const R35EXT = req.user.R35EXT;
+        const TreatmentDetailsPEXT = req.user.TreatmentDetailsPEXT;
+        const TreatmentDetailsPEXT0 = req.user.TreatmentDetailsPEXT0;
         const ExecutionTEXT = req.user.ExecutionTEXT;
         const DurationTEXT = req.user.DurationTEXT;
         const TreatmentDTEXT = req.user.TreatmentDTEXT;
         const DataDTEXT = req.user.DataDTEXT;
         try {
             res.render("ExternallyFundedProject.ejs", {
+                blocksEXT:blocksEXT,
+                TCEXT:TCEXT,
+                dataEXT: allDataEXT,
                 username: username,
                 Principal: Principal,
                 CropEXT: CropEXT,
@@ -282,26 +290,8 @@ app.get('/ExternallyFundedProject', async (req, res) => {
                 executionEXT: executionEXT,
                 DurationEXT: DurationEXT,
                 TreatmentEXT: TreatmentEXT,
-                TreatmentDetailsEXT: TreatmentDetailsEXT,
-                TreatmentDetailsEXT0:TreatmentDetailsEXT0,
-                R1EXT: R1EXT,
-                R2EXT: R2EXT,
-                R3EXT: R3EXT,
-                R11EXT: R11EXT,
-                R12EXT: R12EXT,
-                R13EXT: R13EXT,
-                R14EXT: R14EXT,
-                R15EXT: R15EXT,
-                R21EXT: R21EXT,
-                R22EXT: R22EXT,
-                R23EXT: R23EXT,
-                R24EXT: R24EXT,
-                R25EXT: R25EXT,
-                R31EXT: R31EXT,
-                R32EXT: R32EXT,
-                R33EXT: R33EXT,
-                R34EXT: R34EXT,
-                R35EXT: R35EXT,
+                TreatmentDetailsPEXT: TreatmentDetailsPEXT,
+                TreatmentDetailsPEXT0:TreatmentDetailsPEXT0,
                 ExecutionTEXT: ExecutionTEXT,
                 DurationTEXT: DurationTEXT,
                 TreatmentDTEXT: TreatmentDTEXT,
@@ -320,6 +310,8 @@ app.get('/ExternallyFundedProject', async (req, res) => {
 });
 app.post('/ExternallyFundedProject', async function (req, res) {
     if (req.isAuthenticated() && req.user && req.user.username) {
+        const blocksEXT = [];
+        const TCEXT = req.body.TCEXT;
         const Principal = req.body.Principal;
         const CropEXT = req.body.CropEXT;
         const ResearchEXT = req.body.ResearchEXT;
@@ -327,26 +319,8 @@ app.post('/ExternallyFundedProject', async function (req, res) {
         const executionEXT = req.body.executionEXT;
         const DurationEXT = req.body.DurationEXT;
         const TreatmentEXT = req.body.TreatmentEXT;
-        const TreatmentDetailsEXT = req.body.TreatmentDetailsEXT;
-        const TreatmentDetailsEXT0 = req.body.TreatmentDetailsEXT0;
-        const R1EXT = req.body.R1EXT;
-        const R2EXT = req.body.R2EXT;
-        const R3EXT = req.body.R3EXT;
-        const R11EXT = req.body.R11EXT;
-        const R12EXT = req.body.R12EXT;
-        const R13EXT = req.body.R13EXT;
-        const R14EXT = req.body.R14EXT;
-        const R15EXT = req.body.R15EXT;
-        const R21EXT = req.body.R21EXT;
-        const R22EXT = req.body.R22EXT;
-        const R23EXT = req.body.R23EXT;
-        const R24EXT = req.body.R24EXT;
-        const R25EXT = req.body.R25EXT;
-        const R31EXT = req.body.R31EXT;
-        const R32EXT = req.body.R32EXT;
-        const R33EXT = req.body.R33EXT;
-        const R34EXT = req.body.R34EXT;
-        const R35EXT = req.body.R35EXT;
+        const TreatmentDetailsPEXT = req.body.TreatmentDetailsPEXT;
+        const TreatmentDetailsPEXT0 = req.body.TreatmentDetailsPEXT0;
         const ExecutionTEXT = req.body.ExecutionTEXT;
         const DurationTEXT = req.body.DurationTEXT;
         const TreatmentDTEXT = req.body.TreatmentDTEXT;
@@ -356,9 +330,9 @@ app.post('/ExternallyFundedProject', async function (req, res) {
             if (DataDTEXT) {
               DataDTNEWEXT = DataDTEXT.replace(/\n/g, '<br>'); // Replace line breaks if DataDT is defined
             }
-            let formattedTreatmentDetailsEXT = TreatmentDetailsEXT; // Initialize a variable to store the modified string
-            if (TreatmentDetailsEXT) {
-                formattedTreatmentDetailsEXT = TreatmentDetailsEXT.replace(/\n/g, '<br>'); // Replace line breaks if DataDT is defined
+            let formattedTreatmentDetailsPEXT = TreatmentDetailsPEXT; // Initialize a variable to store the modified string
+            if (TreatmentDetailsPEXT) {
+                formattedTreatmentDetailsPEXT = TreatmentDetailsPEXT.replace(/\n/g, '<br>'); // Replace line breaks if DataDT is defined
             }
             await logindata.updateMany(
                 { username: req.user.username },
@@ -373,34 +347,31 @@ app.post('/ExternallyFundedProject', async function (req, res) {
                         TreatmentEXT: TreatmentEXT,
                     },
                     $push: {
-                        TreatmentDetailsEXT: formattedTreatmentDetailsEXT,
-                        TreatmentDetailsEXT0:TreatmentDetailsEXT0,
-                        R1EXT: R1EXT,
-                        R2EXT: R2EXT,
-                        R3EXT: R3EXT,
-                        R11EXT: R11EXT,
-                        R12EXT: R12EXT,
-                        R13EXT: R13EXT,
-                        R14EXT: R14EXT,
-                        R15EXT: R15EXT,
-                        R21EXT: R21EXT,
-                        R22EXT: R22EXT,
-                        R23EXT: R23EXT,
-                        R24EXT: R24EXT,
-                        R25EXT: R25EXT,
-                        R31EXT: R31EXT,
-                        R32EXT: R32EXT,
-                        R33EXT: R33EXT,
-                        R34EXT: R34EXT,
-                        R35EXT: R35EXT,
+                        TreatmentDetailsPEXT: formattedTreatmentDetailsPEXT,
+                        TreatmentDetailsPEXT0:TreatmentDetailsPEXT0,
                         ExecutionTEXT: ExecutionTEXT,
                         DurationTEXT: DurationTEXT,
+                        TCEXT:TCEXT,
                         TreatmentDTEXT: TreatmentDTEXT,
                         DataDTEXT: DataDTNEWEXT,
                         } 
                         
                     }
                 
+                );
+                for (let i = 0; i < req.body.extendEXT.length; i++) {
+                    const blockEXT = {
+                        extendEXT: req.body.extendEXT[i],
+                    R1EXT: req.body.R1EXT[i],
+                    R2EXT: req.body.R2EXT[i],
+                    R3EXT: req.body.R3EXT[i]
+                    };
+                    console.log(blockEXT);
+                    blocksEXT.push(blockEXT); // Push the block into the blocks array
+                }
+                await logindata.updateMany(
+                    { username: req.user.username },
+                    { $push: { blocksEXT:  blocksEXT  } } // Push the blocks array wrapped with [ and ] using $each
                 );
               res.redirect("/ExternallyFundedProject")
         } catch (error) {
@@ -423,7 +394,37 @@ app.post('/ExternallyFundedProject', async function (req, res) {
 //     })(req, res, next); // Call passport.authenticate immediately
 // });
 
-app.post('/login', (req, res, next) => {
+// app.post('/login', (req, res, next) => {
+//     const studentExperiment = req.body.StudentExperiment;
+//     req.session.studentExperiment = studentExperiment;
+//     array = studentExperiment;
+
+//     passport.authenticate('local', (err, user, info) => {
+//         if (err) {
+//             console.error(err);
+//             return next(err);
+//         }
+
+//         if (!user) {
+//             return res.redirect('/login'); // Handle incorrect credentials
+//         }
+
+//         if (!user.verified) {
+//             return res.redirect('/login?error=notverified'); // Redirect to login with an error message
+//         }
+
+//         req.logIn(user, (err) => {
+//             if (err) {
+//                 console.error(err);
+//                 return next(err);
+//             }
+//             return res.redirect('/redirect');
+//         });
+//     })(req, res, next);
+// });
+
+
+app.post('/login', loginLimiter, (req, res, next) => {
     const studentExperiment = req.body.StudentExperiment;
     req.session.studentExperiment = studentExperiment;
     array = studentExperiment;
@@ -434,8 +435,13 @@ app.post('/login', (req, res, next) => {
             return next(err);
         }
 
+        if (info && info.message === 'Too many login attempts, please try again later.') {
+            // Redirect without exposing rate-limiting message
+            return res.status(429).redirect('/login?error=ratelimit');
+        }
+
         if (!user) {
-            return res.redirect('/login'); // Handle incorrect credentials
+            return res.redirect('/login?error=incorrect'); // Handle incorrect credentials
         }
 
         if (!user.verified) {
@@ -455,6 +461,7 @@ app.post('/login', (req, res, next) => {
 
 
 
+
 app.get('/redirect', (req, res) => {
     req.session.studentExperiment = null;
     req.session.array = null;
@@ -467,12 +474,36 @@ app.get('/redirect', (req, res) => {
         res.redirect('/ExternallyFundedProject');
     } else {
         console.log("Redirecting to profile");
-        res.redirect('/profile'); // Default to profile page
+        res.redirect('/profile'); // Default to profile pages
     }
 });
 app.get('/RCMProject', async (req, res) => {
     // Check if user is authenticated
     if (req.isAuthenticated() && req.user && req.user.username) {
+        const TCRCM = req.user.TCRCM;
+
+        const blocksRCM = req.user.blocksRCM;
+        console.log(blocksRCM);
+    
+        
+
+       
+
+          
+
+         
+          
+
+
+        
+
+
+
+
+
+
+
+        const allDataRCM = await logindata.find();
         const username = req.user.username.substring(0, req.user.username.indexOf('@'));
         const Faculty = req.user.Faculty;
         const CropRCM = req.user.CropRCM;
@@ -482,31 +513,16 @@ app.get('/RCMProject', async (req, res) => {
         const DurationRCM = req.user.DurationRCM;
         const TreatmentRCM = req.user.TreatmentRCM;
         const TreatmentDetailsRCM = req.user.TreatmentDetailsRCM;
-        const R1RCM = req.user.R1RCM;
-        const R2RCM = req.user.R2RCM;
-        const R3RCM = req.user.R3RCM;
         const TreatmentDetailsRCM0 = req.user.TreatmentDetailsRCM0;
-        const R11RCM = req.user.R11RCM;
-        const R12RCM = req.user.R12RCM;
-        const R13RCM = req.user.R13RCM;
-        const R14RCM = req.user.R14RCM;
-        const R15RCM = req.user.R15RCM;
-        const R21RCM = req.user.R21RCM;
-        const R22RCM = req.user.R22RCM;
-        const R23RCM = req.user.R23RCM;
-        const R24RCM = req.user.R24RCM;
-        const R25RCM = req.user.R25RCM;
-        const R31RCM = req.user.R31RCM;
-        const R32RCM = req.user.R32RCM;
-        const R33RCM = req.user.R33RCM;
-        const R34RCM = req.user.R34RCM;
-        const R35RCM = req.user.R35RCM;
         const ExecutionTRCM = req.user.ExecutionTRCM;
         const DurationTRCM = req.user.DurationTRCM;
         const TreatmentDTRCM = req.user.TreatmentDTRCM;
         const DataDTRCM = req.user.DataDTRCM;
         try {
             res.render("RCMProject.ejs", {
+                blocksRCM:blocksRCM,
+                TCRCM:TCRCM,
+                dataRCM: allDataRCM,
                 username: username,
                 Faculty: Faculty,
                 CropRCM: CropRCM,
@@ -516,25 +532,7 @@ app.get('/RCMProject', async (req, res) => {
                 DurationRCM: DurationRCM,
                 TreatmentRCM: TreatmentRCM,
                 TreatmentDetailsRCM: TreatmentDetailsRCM,
-                R1RCM: R1RCM,
-                R2RCM: R2RCM,
-                R3RCM: R3RCM,
                 TreatmentDetailsRCM0:TreatmentDetailsRCM0,
-                R11RCM: R11RCM,
-                R12RCM: R12RCM,
-                R13RCM: R13RCM,
-                R14RCM: R14RCM,
-                R15RCM: R15RCM,
-                R21RCM: R21RCM,
-                R22RCM: R22RCM,
-                R23RCM: R23RCM,
-                R24RCM: R24RCM,
-                R25RCM: R25RCM,
-                R31RCM: R31RCM,
-                R32RCM: R32RCM,
-                R33RCM: R33RCM,
-                R34RCM: R34RCM,
-                R35RCM: R35RCM,
                 ExecutionTRCM: ExecutionTRCM,
                 DurationTRCM: DurationTRCM,
                 TreatmentDTRCM: TreatmentDTRCM,
@@ -554,6 +552,21 @@ app.get('/RCMProject', async (req, res) => {
 
 app.post('/RCMProject', async function (req, res) {
     if (req.isAuthenticated() && req.user && req.user.username) {
+       
+        const blocksRCM = [];
+        const TCRCM = req.body.TCRCM;
+    
+        
+
+       
+
+          
+
+         
+          
+
+
+
         const Faculty = req.body.Faculty;
         const CropRCM = req.body.CropRCM;
         const ResearchRCM = req.body.ResearchRCM;
@@ -562,25 +575,7 @@ app.post('/RCMProject', async function (req, res) {
         const DurationRCM = req.body.DurationRCM;
         const TreatmentRCM = req.body.TreatmentRCM;
         const TreatmentDetailsRCM = req.body.TreatmentDetailsRCM;
-        const R1RCM = req.body.R1RCM;
-        const R2RCM = req.body.R2RCM;
-        const R3RCM = req.body.R3RCM;
         const TreatmentDetailsRCM0 = req.body.TreatmentDetailsRCM0;
-        const R11RCM = req.body.R11RCM;
-        const R12RCM = req.body.R12RCM;
-        const R13RCM = req.body.R13RCM;
-        const R14RCM = req.body.R14RCM;
-        const R15RCM = req.body.R15RCM;
-        const R21RCM = req.body.R21RCM;
-        const R22RCM = req.body.R22RCM;
-        const R23RCM = req.body.R23RCM;
-        const R24RCM = req.body.R24RCM;
-        const R25RCM = req.body.R25RCM;
-        const R31RCM = req.body.R31RCM;
-        const R32RCM = req.body.R32RCM;
-        const R33RCM = req.body.R33RCM;
-        const R34RCM = req.body.R34RCM;
-        const R35RCM = req.body.R35RCM;
         const ExecutionTRCM = req.body.ExecutionTRCM;
         const DurationTRCM = req.body.DurationTRCM;
         const TreatmentDTRCM = req.body.TreatmentDTRCM;
@@ -608,33 +603,30 @@ app.post('/RCMProject', async function (req, res) {
                     },
                     $push: {
                         TreatmentDetailsRCM: formattedTreatmentDetailsRCM,
-                        R1RCM: R1RCM,
-                        R2RCM: R2RCM,
-                        R3RCM: R3RCM,
                         TreatmentDetailsRCM0:TreatmentDetailsRCM0,
-                        R11RCM: R11RCM,
-                        R12RCM: R12RCM,
-                        R13RCM: R13RCM,
-                        R14RCM: R14RCM,
-                        R15RCM: R15RCM,
-                        R21RCM: R21RCM,
-                        R22RCM: R22RCM,
-                        R23RCM: R23RCM,
-                        R24RCM: R24RCM,
-                        R25RCM: R25RCM,
-                        R31RCM: R31RCM,
-                        R32RCM: R32RCM,
-                        R33RCM: R33RCM,
-                        R34RCM: R34RCM,
-                        R35RCM: R35RCM,
                         ExecutionTRCM: ExecutionTRCM,
                         DurationTRCM: DurationTRCM,
+                        TCRCM:TCRCM,
                         TreatmentDTRCM: TreatmentDTRCM,
                         DataDTRCM: DataDTNEWRCM,
                         } 
                         
                     }
                 
+                );
+                for (let i = 0; i < req.body.extendRCM.length; i++) {
+                    const blockRCM = {
+                        extendRCM: req.body.extendRCM[i],
+                    R1RCM: req.body.R1RCM[i],
+                    R2RCM: req.body.R2RCM[i],
+                    R3RCM: req.body.R3RCM[i]
+                    };
+                    console.log(blockRCM);
+                    blocksRCM.push(blockRCM); // Push the block into the blocks array
+                }
+                await logindata.updateMany(
+                    { username: req.user.username },
+                    { $push: { blocksRCM:  blocksRCM  } } // Push the blocks array wrapped with [ and ] using $each
                 );
               res.redirect("/RCMProject")
         } catch (error) {
@@ -645,14 +637,249 @@ app.post('/RCMProject', async function (req, res) {
         res.redirect('/login');
     }
 });
+
+
+    
+
+const xlsx = require('xlsx');
+
+
+app.get('/export-data', async (req, res) => {
+    if (req.isAuthenticated() && req.user && req.user.username) {
+        try {
+            // Retrieve data associated with the logged-in user
+            const username = req.user.username;
+            const userData = await logindata.findOne({ username });
+
+            if (!userData) {
+                // If no data found for the logged-in user, return an error
+                return res.status(404).send('Data not found for the logged-in user');
+            }
+
+            // Convert data to an array of objects
+            const dataArray = [{
+                    username: userData.username,
+                    password: userData.password,
+                    Advisor: userData.Advisor.join(', '), // Convert array to string
+                    Crop: userData.Crop.join(', '), // Convert array to string
+                    Research: userData.Research.join(', '), // Convert array to string
+                    Objectives: userData.Objectives.join(', '), // Convert array to string
+                    blocks: userData.blocks.map(block => block.join(', ')).join('; '),
+                    blocksRCM: userData.blocksRCM.join(', '),
+                    blocksEXT: userData.blocksEXT.join(', '),
+                    allData: userData.allData.join(', '),
+                    Crop: userData.Crop.join(', '),
+                    Research: userData.Research.join(', '),
+                    Objectives: userData.Objectives.join(', '),
+                    TDARR: userData.TDARR.join(', '),
+                    Experiment1Year: userData.Experiment1Year.join(', '),
+                    Experiment1Duration: userData.Experiment1Duration.join(', '),
+                    Experiment1Treatment: userData.Experiment1Treatment.join(', '),
+                    Experiment1Data: userData.Experiment1Data.join(', '),
+                    Experiment2Year: userData.Experiment2Year.join(', '),
+                    Experiment2Duration: userData.Experiment2Duration.join(', '),
+                    Experiment2Treatment: userData.Experiment2Treatment.join(', '),
+                    Experiment2Data: userData.Experiment2Data.join(', '),
+                    Experiment3Year: userData.Experiment3Year.join(', '),
+                    Experiment3Duration: userData.Experiment3Duration.join(', '),
+                    Experiment3Treatment: userData.Experiment3Treatment.join(', '),
+                    Experiment3Data: userData.Experiment3Data.join(', '),
+                    Experiment4Year: userData.Experiment4Year.join(', '),
+                    Experiment4Duration: userData.Experiment4Duration.join(', '),
+                    Experiment4Treatment: userData.Experiment4Treatment.join(', '),
+                    Experiment4Data: userData.Experiment4Data.join(', '),
+                    Year: userData.Year.join(', '),
+                    Duration: userData.Duration.join(', '),
+                    Treatment: userData.Treatment.join(', '),
+                    TreatmentDetailsP: userData.TreatmentDetailsP.join(', '),
+                    TC: userData.TC.join(', '),
+                    TCRCM: userData.TCRCM.join(', '),
+                    TCEXT: userData.TCEXT.join(', '),
+                    Faculty: userData.Faculty.join(', '),
+                    CropRCM: userData.CropRCM.join(', '),
+                    ResearchRCM: userData.ResearchRCM.join(', '),
+                    ObjectivesRCM: userData.ObjectivesRCM.join(', '),
+                    executionRCM: userData.executionRCM.join(', '),
+                    DurationRCM: userData.DurationRCM.join(', '),
+                    TreatmentRCM: userData.TreatmentRCM.join(', '),
+                    TreatmentDetailsRCM: userData.TreatmentDetailsRCM.join(', '),
+                    Principal: userData.Principal.join(', '),
+                    CropEXT: userData.CropEXT.join(', '),
+                    ResearchEXT: userData.ResearchEXT.join(', '),
+                    ObjectivesEXT: userData.ObjectivesEXT.join(', '),
+                    executionEXT: userData.executionEXT.join(', '),
+                    DurationEXT: userData.DurationEXT.join(', '),
+                    TreatmentEXT: userData.TreatmentEXT.join(', '),
+                    TreatmentDetailsPEXT: userData.TreatmentDetailsPEXT.join(', '),
+                    TreatmentDetailsPEXT0: userData.TreatmentDetailsPEXT0.join(', '),
+                    TreatmentDetailsRCM0: userData.TreatmentDetailsRCM0.join(', '),
+                    ExecutionT: userData.ExecutionT.join(', '),
+                    DurationT: userData.DurationT.join(', '),
+                    TreatmentDT: userData.TreatmentDT.join(', '),
+                    DataDT: userData.DataDT.join(', '),
+                    ExecutionTEXT: userData.ExecutionTEXT.join(', '),
+                    DurationTEXT: userData.DurationTEXT.join(', '),
+                    TreatmentDTEXT: userData.TreatmentDTEXT.join(', '),
+                    DataDTEXT: userData.DataDTEXT.join(', '),
+                    ExecutionTRCM: userData.ExecutionTRCM.join(', '),
+                    DurationTRCM: userData.DurationTRCM.join(', '),
+                    TreatmentDTRCM: userData.TreatmentDTRCM.join(', '),
+                    DataDTRCM: userData.DataDTRCM.join(', '),
+            }];
+
+            // Create a new workbook
+            const wb = xlsx.utils.book_new();
+
+            // Convert the data array to a worksheet
+            const ws = xlsx.utils.json_to_sheet(dataArray);
+
+            // Add the worksheet to the workbook
+            xlsx.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+            // Write the workbook to a buffer
+            const buffer = xlsx.write(wb, { type: 'buffer', bookType: 'xlsx' });
+
+            // Set response headers for Excel file download
+            res.setHeader('Content-Disposition', 'attachment; filename="data.xlsx"');
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+            // Send the buffer as the response
+            res.send(buffer);
+        } catch (error) {
+            console.error('Error exporting data to Excel:', error);
+            res.status(500).send('Internal Server Error');
+        }
+    } else {
+        res.redirect('/login');
+    }
+});
+
+
+
+
+app.get('/export-data-all', async (req, res) => {
+    if (req.isAuthenticated() && req.user && req.user.username) {
+        try {
+            const data = await logindata.find();
+
+            // Convert data to an array of objects
+            const dataArray = data.map(doc => {
+                return {
+                    username: doc.username,
+                    password: doc.password,
+                    Advisor: doc.Advisor.join(', '), // Convert array to string
+                    Crop: doc.Crop.join(', '), // Convert array to string
+                    Research: doc.Research.join(', '), // Convert array to string
+                    Objectives: doc.Objectives.join(', '), // Convert array to string
+                    blocks: doc.blocks.map(block => block.join(', ')).join('; '),
+                    blocksRCM: doc.blocksRCM.join(', '),
+                    blocksEXT: doc.blocksEXT.join(', '),
+                    allData: doc.allData.join(', '),
+                    Crop: doc.Crop.join(', '),
+                    Research: doc.Research.join(', '),
+                    Objectives: doc.Objectives.join(', '),
+                    TDARR: doc.TDARR.join(', '),
+                    Experiment1Year: doc.Experiment1Year.join(', '),
+                    Experiment1Duration: doc.Experiment1Duration.join(', '),
+                    Experiment1Treatment: doc.Experiment1Treatment.join(', '),
+                    Experiment1Data: doc.Experiment1Data.join(', '),
+                    Experiment2Year: doc.Experiment2Year.join(', '),
+                    Experiment2Duration: doc.Experiment2Duration.join(', '),
+                    Experiment2Treatment: doc.Experiment2Treatment.join(', '),
+                    Experiment2Data: doc.Experiment2Data.join(', '),
+                    Experiment3Year: doc.Experiment3Year.join(', '),
+                    Experiment3Duration: doc.Experiment3Duration.join(', '),
+                    Experiment3Treatment: doc.Experiment3Treatment.join(', '),
+                    Experiment3Data: doc.Experiment3Data.join(', '),
+                    Experiment4Year: doc.Experiment4Year.join(', '),
+                    Experiment4Duration: doc.Experiment4Duration.join(', '),
+                    Experiment4Treatment: doc.Experiment4Treatment.join(', '),
+                    Experiment4Data: doc.Experiment4Data.join(', '),
+                    Year: doc.Year.join(', '),
+                    Duration: doc.Duration.join(', '),
+                    Treatment: doc.Treatment.join(', '),
+                    TreatmentDetailsP: doc.TreatmentDetailsP.join(', '),
+                    TC: doc.TC.join(', '),
+                    TCRCM: doc.TCRCM.join(', '),
+                    TCEXT: doc.TCEXT.join(', '),
+                    Faculty: doc.Faculty.join(', '),
+                    CropRCM: doc.CropRCM.join(', '),
+                    ResearchRCM: doc.ResearchRCM.join(', '),
+                    ObjectivesRCM: doc.ObjectivesRCM.join(', '),
+                    executionRCM: doc.executionRCM.join(', '),
+                    DurationRCM: doc.DurationRCM.join(', '),
+                    TreatmentRCM: doc.TreatmentRCM.join(', '),
+                    TreatmentDetailsRCM: doc.TreatmentDetailsRCM.join(', '),
+                    Principal: doc.Principal.join(', '),
+                    CropEXT: doc.CropEXT.join(', '),
+                    ResearchEXT: doc.ResearchEXT.join(', '),
+                    ObjectivesEXT: doc.ObjectivesEXT.join(', '),
+                    executionEXT: doc.executionEXT.join(', '),
+                    DurationEXT: doc.DurationEXT.join(', '),
+                    TreatmentEXT: doc.TreatmentEXT.join(', '),
+                    TreatmentDetailsPEXT: doc.TreatmentDetailsPEXT.join(', '),
+                    TreatmentDetailsPEXT0: doc.TreatmentDetailsPEXT0.join(', '),
+                    TreatmentDetailsRCM0: doc.TreatmentDetailsRCM0.join(', '),
+                    ExecutionT: doc.ExecutionT.join(', '),
+                    DurationT: doc.DurationT.join(', '),
+                    TreatmentDT: doc.TreatmentDT.join(', '),
+                    DataDT: doc.DataDT.join(', '),
+                    ExecutionTEXT: doc.ExecutionTEXT.join(', '),
+                    DurationTEXT: doc.DurationTEXT.join(', '),
+                    TreatmentDTEXT: doc.TreatmentDTEXT.join(', '),
+                    DataDTEXT: doc.DataDTEXT.join(', '),
+                    ExecutionTRCM: doc.ExecutionTRCM.join(', '),
+                    DurationTRCM: doc.DurationTRCM.join(', '),
+                    TreatmentDTRCM: doc.TreatmentDTRCM.join(', '),
+                    DataDTRCM: doc.DataDTRCM.join(', '),
+                };
+            });
+
+            // Create a new workbook
+            const wb = xlsx.utils.book_new();
+
+            // Convert the data array to a worksheet
+            const ws = xlsx.utils.json_to_sheet(dataArray);
+
+            // Add the worksheet to the workbook
+            xlsx.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+            // Write the workbook to a buffer
+            const buffer = xlsx.write(wb, { type: 'buffer', bookType: 'xlsx' });
+
+            // Set response headers for Excel file download
+            res.setHeader('Content-Disposition', 'attachment; filename="data.xlsx"');
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+            // Send the buffer as the response
+            res.send(buffer);
+        } catch (error) {
+            console.error('Error exporting data to Excel:', error);
+            res.status(500).send('Internal Server Error');
+        }
+    } else {
+        res.redirect('/login');
+    }
+});
+
+
+
+
 app.get('/profile', async function (req, res) {
     
     if (req.isAuthenticated() && req.user && req.user.username) {
+       
+        const TC = req.user.TC;
+
+        const blocks = req.user.blocks;
+        console.log(blocks);
+        const allData = await logindata.find();
         const username = req.user.username.substring(0, req.user.username.indexOf('@'));
         const Advisor = req.user.Advisor;
         const Crop = req.user.Crop;
         const Research = req.user.Research;
         const Objectives = req.user.Objectives;
+        const TDARR = req.user.TDARR;
         const SubTitle = req.user.SubTitle;
         const Experiment1Year = req.user.Experiment1Year;
         const Experiment1Duration = req.user.Experiment1Duration;
@@ -674,32 +901,21 @@ app.get('/profile', async function (req, res) {
         const Duration = req.user.Duration;
         const Treatment = req.user.Treatment;
         const TreatmentDetailsP = req.user.TreatmentDetailsP;
-        const R11P = req.user.R11P;
-        const R12P = req.user.R12P;
-        const R13P = req.user.R13P;
-        const R14P = req.user.R14P;
-        const R15P = req.user.R15P;
-        const R21P = req.user.R21P;
-        const R22P = req.user.R22P;
-        const R23P = req.user.R23P;
-        const R24P = req.user.R24P;
-        const R25P = req.user.R25P;
-        const R31P = req.user.R31P;
-        const R32P = req.user.R32P;
-        const R33P = req.user.R33P;
-        const R34P = req.user.R34P;
-        const R35P = req.user.R35P;
         const ExecutionT = req.user.ExecutionT;
         const DurationT = req.user.DurationT;
         const TreatmentDT = req.user.TreatmentDT;
         const DataDT = req.user.DataDT;
         try {
             res.render("profile.ejs", {
+                blocks:blocks,
+                TC:TC,
+                data: allData,
                 username: username,
                 Advisor: Advisor,
                 Crop: Crop,
                 Research: Research,
                 Objectives: Objectives,
+                TDARR: TDARR,
                 SubTitle: SubTitle,
                 Experiment1Year: Experiment1Year,
                 Experiment1Duration: Experiment1Duration,
@@ -721,26 +937,12 @@ app.get('/profile', async function (req, res) {
                 Duration: Duration,
                 Treatment: Treatment,
                 TreatmentDetailsP: TreatmentDetailsP,
-                R11P: R11P,
-                R12P: R12P,
-                R13P: R13P,
-                R14P: R14P,
-                R15P: R15P,
-                R21P: R21P,
-                R22P: R22P,
-                R23P: R23P,
-                R24P: R24P,
-                R25P: R25P,
-                R31P: R31P,
-                R32P: R32P,
-                R33P: R33P,
-                R34P: R34P,
-                R35P: R35P,
                 ExecutionT: ExecutionT,
                 DurationT: DurationT,
                 TreatmentDT: TreatmentDT,
                 DataDT: DataDT,
                 sourcePage: "profile",
+                exportUrl: '/export-data'
             });
         } catch (err) {
             console.error("Error fetching skill items:", err);
@@ -758,10 +960,15 @@ app.get('/profile', async function (req, res) {
 
 app.post('/profile', async function (req, res) {
     if (req.isAuthenticated() && req.user && req.user.username) {
-        const Advisor = req.body.Advisor; // Get new favorite game from form
+
+        const blocks = [];
+        const TC = req.body.TC;
+        
+        const Advisor = req.body.Advisor;
         const Crop = req.body.Crop;
         const Research = req.body.Research;
         const Objectives = req.body.Objectives;
+        const TDARR = req.body.TDARR;
         const SubTitle = req.body.SubTitle;
         const Experiment1Year = req.body.Experiment1Year;
         const Experiment1Duration = req.body.Experiment1Duration;
@@ -783,21 +990,6 @@ app.post('/profile', async function (req, res) {
         const Duration = req.body.Duration;
         const Treatment = req.body.Treatment;
         const TreatmentDetailsP = req.body.TreatmentDetailsP;
-        const R11P = req.body.R11P;
-        const R12P = req.body.R12P;
-        const R13P = req.body.R13P;
-        const R14P = req.body.R14P;
-        const R15P = req.body.R15P;
-        const R21P = req.body.R21P;
-        const R22P = req.body.R22P;
-        const R23P = req.body.R23P;
-        const R24P = req.body.R24P;
-        const R25P = req.body.R25P;
-        const R31P = req.body.R31P;
-        const R32P = req.body.R32P;
-        const R33P = req.body.R33P;
-        const R34P = req.body.R34P;
-        const R35P = req.body.R35P;
         const ExecutionT = req.body.ExecutionT;
         const DurationT = req.body.DurationT;
         const TreatmentDT = req.body.TreatmentDT;
@@ -811,6 +1003,7 @@ app.post('/profile', async function (req, res) {
             if (TreatmentDetailsP) {
                 formattedTreatmentDetailsP = TreatmentDetailsP.replace(/\n/g, '<br>'); // Replace line breaks if DataDT is defined
             }
+            
             await logindata.updateMany(
                 { username: req.user.username },
                 {
@@ -840,30 +1033,34 @@ app.post('/profile', async function (req, res) {
                     },
                     $push: {
                         Objectives: Objectives,
+                        TDARR: TDARR,
                         SubTitle:SubTitle,
                         TreatmentDetailsP: formattedTreatmentDetailsP,
-                        R11P: R11P,
-                        R12P: R12P,
-                        R13P: R13P,
-                        R14P: R14P,
-                        R15P: R15P,
-                        R21P: R21P,
-                        R22P: R22P,
-                        R23P: R23P,
-                        R24P: R24P,
-                        R25P: R25P,
-                        R31P: R31P,
-                        R32P: R32P,
-                        R33P: R33P,
-                        R34P: R34P,
-                        R35P: R35P,
+                        TC:TC,
                         ExecutionT: ExecutionT,
                         DurationT: DurationT,
                         TreatmentDT: TreatmentDT,
                         DataDT: DataDTNEW,
-                    }
-                }
-                );
+        }
+            });
+            for (let i = 0; i < req.body.extend.length; i++) {
+                const block = {
+                    extend: req.body.extend[i],
+                R1: req.body.R1[i],
+                R2: req.body.R2[i],
+                R3: req.body.R3[i]
+                };
+                console.log(block);
+                blocks.push(block); // Push the block into the blocks array
+            }
+            await logindata.updateMany(
+                { username: req.user.username },
+                { $push: { blocks:  blocks  } } // Push the blocks array wrapped with [ and ] using $each
+            );
+            
+            
+
+
             
               res.redirect("/profile")
         } catch (error) {
@@ -875,153 +1072,41 @@ app.post('/profile', async function (req, res) {
     }
 });
 
-app.post('/delete', async function (req, res) {
-    if (req.isAuthenticated() && req.user && req.user.username) {
-        const rowIndexWithPage = req.body.rowIndex; // Get the value of the hidden field
-
-        const [rowIndex, sourcePage] = rowIndexWithPage.split('_');
-        const user = req.user;
-
-        try {
-            const updatedDataDT = user.DataDT.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedExecutionT = user.ExecutionT.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedDurationT = user.DurationT.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedTreatmentDetailsP = user.TreatmentDetailsP.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR11P = user.R11P.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR12P = user.R12P.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR13P = user.R13P.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR14P = user.R14P.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR15P = user.R15P.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR21P = user.R21P.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR22P = user.R22P.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR23P = user.R23P.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR24P = user.R24P.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR25P = user.R25P.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR31P = user.R31P.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR32P = user.R32P.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR33P = user.R33P.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR34P = user.R34P.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR35P = user.R35P.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedDataDTRCM = user.DataDTRCM.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedExecutionTRCM = user.ExecutionTRCM.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedDurationTRCM = user.DurationTRCM.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedTreatmentDetailsRCM = user.TreatmentDetailsRCM.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR11RCM = user.R11RCM.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR12RCM = user.R12RCM.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR13RCM = user.R13RCM.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR14RCM = user.R14RCM.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR15RCM = user.R15RCM.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR21RCM = user.R21RCM.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR22RCM = user.R22RCM.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR23RCM = user.R23RCM.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR24RCM = user.R24RCM.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR25RCM = user.R25RCM.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR31RCM = user.R31RCM.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR32RCM = user.R32RCM.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR33RCM = user.R33RCM.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR34RCM = user.R34RCM.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR35RCM = user.R35RCM.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedDataDTEXT = user.DataDTEXT.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedExecutionTEXT = user.ExecutionTEXT.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedDurationTEXT = user.DurationTEXT.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedTreatmentDetailsEXT = user.TreatmentDetailsEXT.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR11EXT = user.R11EXT.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR12EXT = user.R12EXT.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR13EXT = user.R13EXT.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR14EXT = user.R14EXT.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR15EXT = user.R15EXT.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR21EXT = user.R21EXT.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR22EXT = user.R22EXT.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR23EXT = user.R23EXT.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR24EXT = user.R24EXT.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR25EXT = user.R25EXT.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR31EXT = user.R31EXT.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR32EXT = user.R32EXT.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR33EXT = user.R33EXT.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR34EXT = user.R34EXT.filter((_, index) => index !== parseInt(rowIndex));
-            const updatedR35EXT = user.R35EXT.filter((_, index) => index !== parseInt(rowIndex));
-
-            let redirectUrl = "/profile"; // Default to profile page
-            if (sourcePage === "rcmproject") {
-                redirectUrl = "/RCMProject";
-            }
-            else if (sourcePage === "extproject") {
-                redirectUrl = "/ExternallyFundedProject";
-            }
 
 
-            await logindata.findByIdAndUpdate(
-                user._id,
-                {
-                    DataDT: updatedDataDT,
-                    ExecutionT: updatedExecutionT,
-                    DurationT: updatedDurationT,
-                    TreatmentDetailsP: updatedTreatmentDetailsP,
-                    R11P: updatedR11P,
-                    R12P: updatedR12P,
-                    R13P: updatedR13P,
-                    R14P: updatedR14P,
-                    R15P: updatedR15P,
-                    R21P: updatedR21P,
-                    R22P: updatedR22P,
-                    R23P: updatedR23P,
-                    R24P: updatedR24P,
-                    R25P: updatedR25P,
-                    R31P: updatedR31P,
-                    R32P: updatedR32P,
-                    R33P: updatedR33P,
-                    R34P: updatedR34P,
-                    R35P: updatedR35P,
-                    DataDTRCM: updatedDataDTRCM,
-                    ExecutionTRCM: updatedExecutionTRCM,
-                    DurationTRCM: updatedDurationTRCM,
-                    TreatmentDetailsRCM: updatedTreatmentDetailsRCM,
-                    R11RCM: updatedR11RCM,
-                    R12RCM: updatedR12RCM,
-                    R13RCM: updatedR13RCM,
-                    R14RCM: updatedR14RCM,
-                    R15RCM: updatedR15RCM,
-                    R21RCM: updatedR21RCM,
-                    R22RCM: updatedR22RCM,
-                    R23RCM: updatedR23RCM,
-                    R24RCM: updatedR24RCM,
-                    R25RCM: updatedR25RCM,
-                    R31RCM: updatedR31RCM,
-                    R32RCM: updatedR32RCM,
-                    R33RCM: updatedR33RCM,
-                    R34RCM: updatedR34RCM,
-                    R35RCM: updatedR35RCM,
-                    DataDTEXT: updatedDataDTEXT,
-                    ExecutionTEXT: updatedExecutionTEXT,
-                    DurationTEXT: updatedDurationTEXT,
-                    TreatmentDetailsEXT: updatedTreatmentDetailsEXT,
-                    R11EXT: updatedR11EXT,
-                    R12EXT: updatedR12EXT,
-                    R13EXT: updatedR13EXT,
-                    R14EXT: updatedR14EXT,
-                    R15EXT: updatedR15EXT,
-                    R21EXT: updatedR21EXT,
-                    R22EXT: updatedR22EXT,
-                    R23EXT: updatedR23EXT,
-                    R24EXT: updatedR24EXT,
-                    R25EXT: updatedR25EXT,
-                    R31EXT: updatedR31EXT,
-                    R32EXT: updatedR32EXT,
-                    R33EXT: updatedR33EXT,
-                    R34EXT: updatedR34EXT,
-                    R35EXT: updatedR35EXT,
-                }
-            );
 
-            res.redirect(redirectUrl);
-        } catch (error) {
-            console.error('Error deleting row:', error);
-            res.redirect('/login');
-        }
+
+
+
+
+
+function filterAndUpdateProperty(user, propertyName, rowIndex) {
+    if (user && Array.isArray(user[propertyName])) {
+        const updatedProperty = user[propertyName].filter((_, index) => index !== parseInt(rowIndex));
+        return updatedProperty;
     } else {
-        res.redirect('/login');
+        console.error(`Invalid property: ${propertyName}`);
+        return [];
     }
-});
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 app.post('/upload', upload.single('file'), async (req, res) => {

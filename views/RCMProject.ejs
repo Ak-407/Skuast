@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
+    <title>RCMProject</title>
     <link rel="stylesheet" href="StyleP.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://dl.dropboxusercontent.com/s/0cuc5nq39d2loqg/bootstrap-tokenfield.js">
@@ -76,213 +76,50 @@
 
 
 
+    <h2 class="h2OBJ">Experiment</h2>
+
+    
 
 
 
-    <% for (let i = 0; i < Math.max(ExecutionTRCM.length, DurationTRCM.length, DataDTRCM.length); i++,TreatmentDetailsRCM.length, R11RCM.length, R21RCM.length, R31RCM.length) { %>
-        <h5 class="Th5">Topic :- <%- i < DataDTRCM.length ? DataDTRCM[i] : '' %> </h5>
+
+
+
+
+
+    <% for (let i = 0; i < Math.max(ExecutionTRCM.length, DurationTRCM.length, DataDTRCM.length); i++) { %>
+        <h5 class="Th5">Topic: <%= i < DataDTRCM.length ? DataDTRCM[i] : '' %></h5>
         <div class="TD TDfirst">
-        <table>
-        <div class="form-group">
-            <tr>
-                <th>Experiment Sub-Title </th>
-                <th>Year Of Execution</th>
-                <th>Duration</th>
-            </tr>
+            <table>
                 <tr>
-                    <td data-heading="Experiment Sub-Title"><%- i < DataDTRCM.length ? DataDTRCM[i] : '' %></td>
+                    <th>Experiment Sub-Title</th>
+                    <th>Year Of Execution</th>
+                    <th>Duration</th>
+                </tr>
+                <tr>
+                    <td data-heading="Experiment Sub-Title"><%= i < DataDTRCM.length ? DataDTRCM[i] : '' %></td>
                     <td data-heading="Year Of Execution"><%= i < ExecutionTRCM.length ? ExecutionTRCM[i] : '' %></td>
                     <td data-heading="Duration"><%= i < DurationTRCM.length ? DurationTRCM[i] : '' %></td>
-                    
-                </tr>
-                
-                
-                
-    </div>
-    </table>
-</div>
-<div class="TD TDsecond">
-    <table>
-        <div class="form-group">
-            <tr>
-                <th>Treatment Details</th>
-                <th>R1</th>
-                <th>Mean</th>
-                <th>R2</th>
-                <th>Mean</th>
-                <th>R3</th>
-                <th>Mean</th>
-            </tr>
-                <tr>
-                    <td data-heading="Treatment Details">
-                        <div id="treatment-details-div">
-                            <%- i < TreatmentDetailsRCM.length ? TreatmentDetailsRCM[i] : '' %>
-                        </div>
-                    </td>
-                    
-                    <td>
-                        <table class="sub-table TNEW">
-                            <tr>
-                                <td data-heading="R11"><%= i < R11RCM.length ? R11RCM[i] : '' %></td>
-                            </tr>
-                        </table>
-                        <table class="sub-table TNEW">
-                            <tr>
-                                <td data-heading="R12"><%= i < R12RCM.length ? R12RCM[i] : '' %></td>
-                            </tr>
-                        </table>
-                        <table class="sub-table TNEW">
-                            <tr>
-                                <td data-heading="R13"><%= i < R13RCM.length ? R13RCM[i] : '' %></td>
-                            </tr>
-                        </table>
-                        <table class="sub-table TNEW">
-                            <tr>
-                                <td data-heading="R14"><%= i < R14RCM.length ? R14RCM[i] : '' %></td>
-                            </tr>
-                        </table>
-                        <table class="sub-table TNEW">
-                            <tr>
-                                <td data-heading="R15"><%= i < R15RCM.length ? R15RCM[i] : '' %></td>
-                            </tr>
-                        </table>
-                        
-                    </td>
-                    <td data-heading="Mean">
-                        <% 
-                        const r11ValueRCMPP = i < R11RCM.length && !isNaN(parseFloat(R11RCM[i])) ? parseFloat(R11RCM[i]) : 0;
-                        const r12ValueRCMPP = i < R12RCM.length && !isNaN(parseFloat(R12RCM[i])) ? parseFloat(R12RCM[i]) : 0;
-                        const r13ValueRCMPP = i < R13RCM.length && !isNaN(parseFloat(R13RCM[i])) ? parseFloat(R13RCM[i]) : 0;
-                        const r14ValueRCMPP = i < R14RCM.length && !isNaN(parseFloat(R14RCM[i])) ? parseFloat(R14RCM[i]) : 0;
-                        const r15ValueRCMPP = i < R15RCM.length && !isNaN(parseFloat(R15RCM[i])) ? parseFloat(R15RCM[i]) : 0;
-                        const meanValueRCMPP = (r11ValueRCMPP+r12ValueRCMPP+r13ValueRCMPP+r14ValueRCMPP+r15ValueRCMPP) / 5;
-                        %>
-                        <%= meanValueRCMPP.toFixed(2) %>
-                    </td>
-                    <td>
-                        <table class="sub-table TNEW">
-                            <tr>
-                                <td data-heading="R21"><%= i < R21RCM.length ? R21RCM[i] : '' %></td>
-                            </tr>
-                        </table>
-                        <table class="sub-table TNEW">
-                            <tr>
-                                <td data-heading="R22"><%= i < R22RCM.length ? R22RCM[i] : '' %></td>
-                            </tr>
-                        </table>
-                        <table class="sub-table TNEW">
-                            <tr>
-                                <td data-heading="R23"><%= i < R23RCM.length ? R23RCM[i] : '' %></td>
-                            </tr>
-                        </table>
-                        <table class="sub-table TNEW">
-                            <tr>
-                                <td data-heading="R24"><%= i < R24RCM.length ? R24RCM[i] : '' %></td>
-                            </tr>
-                        </table>
-                        <table class="sub-table TNEW">
-                            <tr>
-                                <td data-heading="R25"><%= i < R25RCM.length ? R25RCM[i] : '' %></td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td data-heading="Mean">
-                        <% 
-                        const r21ValueRCMPPP = i < R21RCM.length && !isNaN(parseFloat(R21RCM[i])) ? parseFloat(R21RCM[i]) : 0;
-                        const r22ValueRCMPPP = i < R22RCM.length && !isNaN(parseFloat(R22RCM[i])) ? parseFloat(R22RCM[i]) : 0;
-                        const r23ValueRCMPPP = i < R23RCM.length && !isNaN(parseFloat(R23RCM[i])) ? parseFloat(R23RCM[i]) : 0;
-                        const r24ValueRCMPPP = i < R24RCM.length && !isNaN(parseFloat(R24RCM[i])) ? parseFloat(R24RCM[i]) : 0;
-                        const r25ValueRCMPPP = i < R25RCM.length && !isNaN(parseFloat(R25RCM[i])) ? parseFloat(R25RCM[i]) : 0;
-                        const meanValueRCMPPP = (r21ValueRCMPPP+r22ValueRCMPPP+r23ValueRCMPPP+r24ValueRCMPPP+r25ValueRCMPPP) / 5;
-                        %>
-                        <%= meanValueRCMPPP.toFixed(2) %>
-                    </td>
-                    <td>
-                        <table class="sub-table TNEW">
-                            <tr>
-                                <td data-heading="R31"><%= i < R31RCM.length ? R31RCM[i] : '' %></td>
-                            </tr>
-                        </table>
-                        <table class="sub-table TNEW">
-                            <tr>
-                                <td data-heading="R32"><%= i < R32RCM.length ? R32RCM[i] : '' %></td>
-                            </tr>
-                        </table>
-                        <table class="sub-table TNEW">
-                            <tr>
-                                <td data-heading="R33"><%= i < R33RCM.length ? R33RCM[i] : '' %></td>
-                            </tr>
-                        </table>
-                        <table class="sub-table TNEW">
-                            <tr>
-                                <td data-heading="R34"><%= i < R34RCM.length ? R34RCM[i] : '' %></td>
-                            </tr>
-                        </table>
-                        <table class="sub-table TNEW">
-                            <tr>
-                                <td data-heading="R35"><%= i < R35RCM.length ? R35RCM[i] : '' %></td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td data-heading="Mean">
-                        <% 
-                        const r31ValueRCM = i < R31RCM.length && !isNaN(parseFloat(R31RCM[i])) ? parseFloat(R31RCM[i]) : 0;
-                        const r32ValueRCM = i < R32RCM.length && !isNaN(parseFloat(R32RCM[i])) ? parseFloat(R32RCM[i]) : 0;
-                        const r33ValueRCM = i < R33RCM.length && !isNaN(parseFloat(R33RCM[i])) ? parseFloat(R33RCM[i]) : 0;
-                        const r34ValueRCM = i < R34RCM.length && !isNaN(parseFloat(R34RCM[i])) ? parseFloat(R34RCM[i]) : 0;
-                        const r35ValueRCM = i < R35RCM.length && !isNaN(parseFloat(R35RCM[i])) ? parseFloat(R35RCM[i]) : 0;
-                        const meanValueRCM = (r31ValueRCM+r32ValueRCM+r33ValueRCM+r34ValueRCM+r35ValueRCM) / 5;
-                        %>
-                        <%= meanValueRCM.toFixed(2) %>
-                    </td>
-            
-                    <td>
-                        <form action="/delete" method="POST">
-                            <input type="hidden" name="rowIndex" value="<%= i %>_rcmproject">
-                            <button id="job-post-button" class="btn btn-danger mt-3" type="submit">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-    </div>
-</table>
-</div>
-<hr><hr>
-<%
-}
-%>
 
-    <hr>
-    <form action="/RCMProject" method="POST"> 
-        <div class="TD TDfirst">
-        <table>
-        <div class="form-group">
-            <tr>
-                <th>Experiment Sub-Title </th>
-                <th>Year Of Execution</th>
-                <th>Duration</th>
-            </tr>
-            <% for (let i = 0; i < Math.max(ExecutionTRCM.length, DurationTRCM.length, DataDTRCM.length); i++) { %>
-                
-                
-                <% } %>
-                
-                
-                
-                <tr>
-                    <td data-heading="Sub-Title">
-                        <textarea id="textarea" placeholder="Sub-Title of Experiment" name="DataDTRCM"></textarea>
-                        </td>
-                    <td data-heading="Year Of Execution"><input type="text" placeholder="Year Of Execution" name="ExecutionTRCM"></td>
-                    <td data-heading="Duration"><input type="text" placeholder="Duration" name="DurationTRCM"></td>
                 </tr>
-    </div>
-    </table>
-</div>
-        <!-- </form>
-    <form action="/profile" method="POST">  -->
-        <div class="TD TDsecond">
+            </table>
+        </div>   
+        
+        <% for (let j = i; j < Math.max(TCRCM.length, blocksRCM.length); j++) { %>
+        <div class="TD TDfirst">
             <table>
-                <div class="form-group">
+                <tr>
+                    <th>Treatment Combination</th>
+                </tr>
+                <tr>
+                    <td data-heading="Treatment Combination"><%= j < TCRCM.length ? TCRCM[j] : '' %></td>
+
+                </tr>
+            </table>
+        </div>    
+        <div class="TD TDsecond">
+            <div class="form-group">
+                <table  class="tablewidth">
                     <tr>
                         <th>Treatment Details</th>
                         <th>R1</th>
@@ -292,123 +129,201 @@
                         <th>R3</th>
                         <th>Mean</th>
                     </tr>
-                    <%
-                        const maxArrayLengthh = Math.max(TreatmentDetailsRCM.length, R11RCM.length, R21RCM.length, R31RCM.length);
-                        for (let i = 0; i < maxArrayLengthh; i++) {
-                            if (i < TreatmentDetailsRCM.length || i < R11RCM.length || i < R21RCM.length || i < R31RCM.length) {
-                        %>
-                        
-                        <%
-                    }
-                }
-                %>
+                    <% if (blocksRCM && Array.isArray(blocksRCM) && j < blocksRCM.length) { %>
+                        <% blocksRCM[j].forEach(function(item, index) { %>
+                            <tr>
+                                <td data-heading="Treatment Details">
+                                    <div id="treatment-details-div">
+                                        <%= item.extendRCM %>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="display: flex;">
+                                        <% let sumR1 = 0; %>
+                                        <% if (item.R1RCM && Array.isArray(item.R1RCM)) { %>
+                                            <% item.R1RCM.forEach(function(value) { %>
+                                                <%= value %><br>
+                                                <% sumR1 += parseInt(value); %>
+                                            <% }); %>
+                                        <% } %>
+                                    </div>
+                                </td>
+                                <td data-heading="Mean">
+                                    <% let meanR1 = item.R1RCM ? sumR1 / item.R1RCM.length : 0; %>
+                                    <%= meanR1.toFixed(2); %>
+                                </td>
+                                <td>
+                                    <div style="display: flex;">
+                                        <% let sumR2 = 0; %>
+                                        <% if (item.R2RCM && Array.isArray(item.R2RCM)) { %>
+                                            <% item.R2RCM.forEach(function(value) { %>
+                                                <%= value %><br>
+                                                <% sumR2 = sumR2+ parseInt(value); %>
+                                                <% console.log(value+"     wkdjbck"); %>
+                                            <% }); %>
+                                        <% } %>
+                                    </div>
+                                </td>
+                                <td data-heading="Mean">
+                                    <% let meanR2 = item.R2RCM ? sumR2 / item.R2RCM.length : 0; %>
+                                    <%= meanR2.toFixed(2); %>
+                                </td>
+                                <td>
+                                    <div style="display: flex;">
+                                        <% let sumR3 = 0; %>
+                                        <% if (item.R3RCM && Array.isArray(item.R3RCM)) { %>
+                                            <% item.R3RCM.forEach(function(value) { %>
+                                                <%= value %><br>
+                                                <% sumR3 += parseInt(value); %>
+                                            <% }); %>
+                                        <% } %>
+                                    </div>
+                                </td>
+                                <td data-heading="Mean">
+                                    <% let meanR3 = item.R3RCM ? sumR3 / item.R3RCM.length : 0; %>
+                                    <%= meanR3.toFixed(2); %>
+                                </td>
+                    
+                            </tr>
+                        <% }); %>
+                    <% } %>
+                    
+                </table>
+            </div>
+        </div>
+        
+        
+        <% } %>
+        <% } %>
+    
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <form action="/RCMProject" method="POST" > 
+        <div class="TD TDfirst">
+        <table>
+        <div class="form-group">
+            <tr>
+                <th>Experiment Sub-Title </th>
+                <th>Year Of Execution</th>
+                <th>Duration</th>
+            </tr>
+            <% for (let i = 0; i < Math.max(ExecutionTRCM.length, DurationTRCM.length, DataDTRCM.length); i++) { %>
+               
+                
+                <% } %>
+                
+                
+                
+                <tr>
+                    <td>
+                        <textarea id="textarea" placeholder="Sub-Title if Experiment" name="DataDTRCM"></textarea>
+                        </td>
+                    <td><input type="text" placeholder="Year Of Execution" name="ExecutionTRCM"></td>
+                    <td><input type="text" placeholder="Duration" name="DurationTRCM"></td>
+                </tr>
+    </div>
+    </table>
+</div>
+
+<button id="job-post-button" class="btn btn-success mt-3" type="submit">Submit</button>
+</form>
+
+<form action="/RCMProject" method="POST" > 
+<div class="TD TDfirst">
+<table>
+    <div class="form-group">
+            <tr>
+                <td><input class="TrCmb" type="text" placeholder="Treatment Combination" name="TCRCM"></td>
+            </tr>
+</div>
+</table>
+</div>
+
+        <div class="TD TDsecond">
+            <table id="dataTable">
+                <div class="form-group">
+                    <tr>
+                        <th>Treatment Details</th>
+                        <th>R1</th>
+                        <th>R2</th>
+                        <th>R3</th>
+                    </tr>
+                    
+                    
                     
                     <tr>
                         <td>
-                            <textarea id="multiline-inpt" placeholder="Treatment Details" name="TreatmentDetailsRCM" rows="10" cols="20"></textarea>
+                            <input class="elong" type="text" placeholder="Extend" name="extendRCM[]">
+                            <!-- <textarea id="multiline-inpt" placeholder="Treatment Details" name="TreatmentDetailsP" rows="10" cols="20"></textarea> -->
                         </td>                        
                         <td class="put">
-                            <% for (let j = 0; j < 5; j++) { %>
-                                <input data-heading="R2<%= j + 1 %>" type="text" placeholder="R1<%= j + 1 %>" name="R1<%= j + 1 %>RCM">
-                            <% } %>
+                            <div style="display: flex; justify-content: center;">
+                                <input type="text" placeholder="R11" name="R1RCM[0][]">
+                            </div>
+                                <button class="btn btn-warning mt-4" type="button" onclick="addInput(this)">+</button>
                         </td>
-                        <td data-heading="Mean" class="put"><input type="text" placeholder="Mean" name="MeanRCM"></td>
                         <td class="put">
-                            <% for (let j = 0; j < 5; j++) { %>
-                                <input data-heading="R2<%= j + 1 %>" type="text" placeholder="R2<%= j + 1 %>" name="R2<%= j + 1 %>RCM">
-                            <% } %>
+                            <div style="display: flex; justify-content: center;">
+                                <input type="text" placeholder="R11" name="R2RCM[0][]">
+                            </div>
+                        <button class="btn btn-warning mt-4" type="button" onclick="addInput(this)">+</button>
                         </td>
-                        <td data-heading="Mean" class="put"><input type="text" placeholder="Mean" name="MeanRCM"></td>
                         <td class="put">
-                            <% for (let j = 0; j < 5; j++) { %>
-                                <input data-heading="R2<%= j + 1 %>" type="text" placeholder="R3<%= j + 1 %>" name="R3<%= j + 1 %>RCM">
-                            <% } %>
+                            <div style="display: flex; justify-content: center;">
+                                <input type="text" placeholder="R11" name="R3RCM[0][]">
+                            </div>
+                                <button class="btn btn-warning mt-4" type="button" onclick="addInput(this)">+</button>
                         </td>
-                        <td data-heading="Mean" class="put"><input type="text" placeholder="Mean" name="MeanRCM"></td>
-                        <td><button id="job-post-button" class="btn btn-success mt-3" type="submit">Submit</button></td>
+                        
                     </tr>
+                    
                 </div>
             </table>
+            <button class="btn btn-warning mt-4" type="button" onclick="addRow()">Add Row +</button>
+            <button id="job-post-button" class="btn btn-success mt-3" type="submit">Submit</button>
         </div>
-        <hr><hr>
-        <div class="TD TDfirst">
-        <table>
-            <div class="form-group">
-                <tr>
-                    <th>Treatment Details</th>
-                    <th>R1</th>
-                    <th>R2</th>
-                    <th>R3</th>
-                    <th>Mean</th>
-                </tr>
-                <%
-                    const maxArrayLengthNN = Math.max(TreatmentDetailsRCM.length, R11RCM.length, R21RCM.length, R31RCM.length);
-                    for (let i = 0; i < maxArrayLengthNN; i++) {
-                        // Check if there is valid data in at least one of the arrays
-                        if (i < TreatmentDetailsRCM.length || i < R11RCM.length || i < R21RCM.length || i < R31RCM.length) {
-                    %>
-                    <tr>
-                        <td>
-                            <div id="treatment-details-div">
-                                <%- i < TreatmentDetailsRCM.length ? TreatmentDetailsRCM[i] : '' %>
-                            </div>
-                        </td>
-                        
-                        
-                        <td data-heading="R1">
-                            <% 
-                            const r11ValueRCMPP = i < R11RCM.length && !isNaN(parseFloat(R11RCM[i])) ? parseFloat(R11RCM[i]) : 0;
-                            const r12ValueRCMPP = i < R12RCM.length && !isNaN(parseFloat(R12RCM[i])) ? parseFloat(R12RCM[i]) : 0;
-                            const r13ValueRCMPP = i < R13RCM.length && !isNaN(parseFloat(R13RCM[i])) ? parseFloat(R13RCM[i]) : 0;
-                            const r14ValueRCMPP = i < R14RCM.length && !isNaN(parseFloat(R14RCM[i])) ? parseFloat(R14RCM[i]) : 0;
-                            const r15ValueRCMPP = i < R15RCM.length && !isNaN(parseFloat(R15RCM[i])) ? parseFloat(R15RCM[i]) : 0;
-                            const meanValueRCMPP = (r11ValueRCMPP+r12ValueRCMPP+r13ValueRCMPP+r14ValueRCMPP+r15ValueRCMPP) / 5;
-                            %>
-                            <%= meanValueRCMPP.toFixed(2) %>
-                        </td>
-                        <td data-heading="R2">
-                            <% 
-                            const r21ValueRCMPPP = i < R21RCM.length && !isNaN(parseFloat(R21RCM[i])) ? parseFloat(R21RCM[i]) : 0;
-                            const r22ValueRCMPPP = i < R22RCM.length && !isNaN(parseFloat(R22RCM[i])) ? parseFloat(R22RCM[i]) : 0;
-                            const r23ValueRCMPPP = i < R23RCM.length && !isNaN(parseFloat(R23RCM[i])) ? parseFloat(R23RCM[i]) : 0;
-                            const r24ValueRCMPPP = i < R24RCM.length && !isNaN(parseFloat(R24RCM[i])) ? parseFloat(R24RCM[i]) : 0;
-                            const r25ValueRCMPPP = i < R25RCM.length && !isNaN(parseFloat(R25RCM[i])) ? parseFloat(R25RCM[i]) : 0;
-                            const meanValueRCMPPP = (r21ValueRCMPPP+r22ValueRCMPPP+r23ValueRCMPPP+r24ValueRCMPPP+r25ValueRCMPPP) / 5;
-                            %>
-                            <%= meanValueRCMPPP.toFixed(2) %>
-                        </td>
-                        <td data-heading="R3">
-                            <% 
-                            const r31ValueRCMP = i < R31RCM.length && !isNaN(parseFloat(R31RCM[i])) ? parseFloat(R31RCM[i]) : 0;
-                            const r32ValueRCMP = i < R32RCM.length && !isNaN(parseFloat(R32RCM[i])) ? parseFloat(R32RCM[i]) : 0;
-                            const r33ValueRCMP = i < R33RCM.length && !isNaN(parseFloat(R33RCM[i])) ? parseFloat(R33RCM[i]) : 0;
-                            const r34ValueRCMP = i < R34RCM.length && !isNaN(parseFloat(R34RCM[i])) ? parseFloat(R34RCM[i]) : 0;
-                            const r35ValueRCMP = i < R35RCM.length && !isNaN(parseFloat(R35RCM[i])) ? parseFloat(R35RCM[i]) : 0;
-                            const meanValueRCMP = (r31ValueRCMP+r32ValueRCMP+r33ValueRCMP+r34ValueRCMP+r35ValueRCMP) / 5;
-                            %>
-                            <%= meanValueRCMP.toFixed(2) %>
-                        </td>
-                        <td data-heading="Mean">
-                            <% 
-                            const meanValueM = (meanValueRCMPP+meanValueRCMPPP+meanValueRCMP) / 3;
-                            %>
-                            <%= meanValueM.toFixed(2) %>
-                        </td>
-                    </tr>
-                    <%
-                }
-            }
-            %>
-                
-                
-            </div>
-        </table>
-    </div>
-    <hr>
-    <br><br>
+
     </form>
 
 
+    <div class="TD TDsecond">
+        <button id="job-post-button" class="btn btn-danger mt-3" type="submit">
+        <a style="color: white;" href="<%= exportUrl %>">Export Data to Excel</a>
+        </button>
+        </div>
+        <hr>
 
 
 
@@ -416,6 +331,58 @@
 
 
 
+    
+
+    <script>
+        function addInput(button) {
+    const parentDiv = button.parentNode;
+    const inputs = parentDiv.querySelectorAll("input[type='text']");
+    const newInput = inputs[inputs.length - 1].cloneNode();
+    newInput.value = "";
+
+    // Apply flexbox styling to center the new input field within its parent container
+    const flexContainer = document.createElement("div");
+    flexContainer.style.display = "flex";
+    flexContainer.style.justifyContent = "center";
+    flexContainer.appendChild(newInput);
+
+    parentDiv.insertBefore(flexContainer, button);
+}
+
+        function addRow() {
+    const table = document.getElementById("dataTable");
+    const newRow = table.insertRow(-1); // Insert a new row at the end of the table
+    const firstRow = table.rows[1]; // Get the reference to the first row
+
+    // Clone each cell from the first row and append to the new row
+    for (let i = 0; i < firstRow.cells.length; i++) {
+        const newCell = newRow.insertCell(i);
+        const cell = firstRow.cells[i];
+        const input = cell.querySelector("input[type='text']");
+        const newInput = input.cloneNode();
+        newInput.value = ""; // Clear the value of the new input
+        // Update the name attribute to ensure uniqueness
+        newInput.setAttribute("name", input.getAttribute("name").replace("[0]", `[${table.rows.length - 2}]`));
+
+        // Apply flexbox styling to center the input field
+        const flexContainer = document.createElement("div");
+        flexContainer.style.display = "flex";
+        flexContainer.style.justifyContent = "center";
+        flexContainer.appendChild(newInput);
+        newCell.appendChild(flexContainer);
+
+        if (i > 0) { // Add button only for R1, R2, and R3 cells
+            const button = document.createElement("button");
+            button.textContent = "+";
+            button.setAttribute("type", "button");
+            button.setAttribute("class", "btn btn-warning mt-4"); 
+            button.setAttribute("onclick", "addInput(this)");
+            newCell.appendChild(button);
+        }
+    }
+}
+
+    </script>
 
 
 
@@ -466,37 +433,9 @@
         <label for="ObjectivesRCM"><h1><%= ObjectivesRCM %></h1></label>
         <% }); %>
         <% } else { %>
-            <p>You haven't added any favorite Objectives yet.</p>
+            <p>You haven't added any Objectives yet.</p>
         <% } %>
         <input id="job-title" class="form-control EXP" type="text" id="ObjectivesRCM" placeholder="Objectives" name="ObjectivesRCM">
-        </div>
-        <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
-    </form>
-    <form action="/RCMProject" method="POST">
-         <div class="form-group">
-        <% if (executionRCM && executionRCM.length > 0) { %>
-            <% console.log("Type of executionRCM:", typeof executionRCM); %>
-        <% executionRCM.forEach(function(executionRCM) { %>
-        <label for="Faculty"><h1><%= executionRCM %></h1></label>
-        <% }); %>
-        <% } else { %>
-            <p>You haven't added any favorite Year of execution yet.</p>
-        <% } %>
-        <input id="job-title" class="form-control" type="text" id="executionRCM" placeholder="Year of execution" name="executionRCM">
-        </div>
-        <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
-    </form>
-    <form action="/RCMProject" method="POST">
-         <div class="form-group">
-        <% if (DurationRCM && DurationRCM.length > 0) { %>
-            <% console.log("Type of DurationRCM:", typeof DurationRCM); %>
-        <% DurationRCM.forEach(function(DurationRCM) { %>
-        <label for="DurationRCM"><h1><%= DurationRCM %></h1></label>
-        <% }); %>
-        <% } else { %>
-            <p>You haven't added any favorite Duration yet.</p>
-        <% } %>
-        <input id="job-title" class="form-control" type="text" id="DurationRCM" placeholder="Duration of experiment" name="DurationRCM">
         </div>
         <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
     </form>
@@ -508,9 +447,9 @@
         <label for="TreatmentRCM"><h1><%= TreatmentRCM %></h1></label>
         <% }); %>
         <% } else { %>
-            <p>You haven't added any favorite Treatment details: yet.</p>
+            <p>You haven't added any Extra details: yet.</p>
         <% } %>
-        <input id="job-title" class="form-control EXP" type="text" id="TreatmentRCM" placeholder="Treatment details" name="TreatmentRCM">
+        <input id="job-title" class="form-control EXP" type="text" id="TreatmentRCM" placeholder="Extra details" name="TreatmentRCM">
         </div>
         <button id="job-post-button" class="btn btn-success mt-3" type="submit">Add</button>
     </form>
@@ -527,58 +466,6 @@
 
 
 
-    
-    <!-- <form action="/RCMProject" method="POST"> 
-        <div class="TD TDsecond">
-            <table>
-            <div class="form-group">
-                <tr>
-                    <th>Treatment Details</th>
-                    <th>R1</th>
-                    <th>R2</th>
-                    <th>R3</th>
-                    <th>Mean</th>
-                </tr>
-                <% for (let i = 0; i < Math.max(TreatmentDetailsRCM.length, R1RCM.length, R2RCM.length, R3RCM.length); i++) { %>
-                    <tr>
-                        <td data-heading="Treatment Details"><%= i < TreatmentDetailsRCM.length ? TreatmentDetailsRCM[i] : '' %></td>
-                        <td data-heading="R1"><%= i < R1RCM.length ? R1RCM[i] : '' %></td>
-                        <td data-heading="R2"><%= i < R2RCM.length ? R2RCM[i] : '' %></td>
-                        <td data-heading="R3"><%= i < R3RCM.length ? R3RCM[i] : '' %></td>
-                        <td data-heading="Mean">
-                            <% 
-                            const r1ValueRCM = i < R1RCM.length && !isNaN(parseFloat(R1RCM[i])) ? parseFloat(R1RCM[i]) : 0;
-                            const r2ValueRCM = i < R2RCM.length && !isNaN(parseFloat(R2RCM[i])) ? parseFloat(R2RCM[i]) : 0;
-                            const r3ValueRCM = i < R3RCM.length && !isNaN(parseFloat(R3RCM[i])) ? parseFloat(R3RCM[i]) : 0;
-                            const meanValueRCM = (r1ValueRCM + r2ValueRCM + r3ValueRCM) / 3;
-                            %>
-                            <%= meanValueRCM.toFixed(2) %>
-                        </td>
-                        
-                    
-                    <td>
-                        <form action="/delete" method="POST">
-                            <input type="hidden" name="rowIndex" value="<%= i %>_rcmproject">
-                            <button id="job-post-button" class="btn btn-danger mt-3" type="submit">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                <% } %>
-                
-    
-    
-            <tr>
-                <td><input type="text" placeholder="Treatment Details" name="TreatmentDetailsRCM"></td>
-            <td><input type="text" placeholder="R1" name="R1RCM"></td>
-            <td><input type="text" placeholder="R2" name="R2RCM"></td>
-            <td><input type="text" placeholder="R3" name="R3RCM"></td>
-            <td><input type="text" placeholder="Mean" name="MeanRCM"></td>
-                <td><button id="job-post-button" class="btn btn-success mt-3" type="submit">Submit</button></td>
-            </tr>
-        </div>
-    </table>
-</div>
-            </form> -->
             </div>
             </div>
         </section>
