@@ -499,7 +499,7 @@ nav button{
     font: inherit !important;
     line-height: 50px !important;
     margin: 0.5em !important;
-    padding: 1em 1em !important;
+    padding: 0em 0em !important;
     border-radius:70px 1px !important;
     font-weight: bolder !important;
 }
